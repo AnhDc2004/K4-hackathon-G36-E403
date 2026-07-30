@@ -1,0 +1,473 @@
+[
+  {
+    "id": "case-01",
+    "topic": "chat-chung",
+    "layer": "nguon-su-that",
+    "input": "Mọi người ơi tối nay có họp không?",
+    "context": [
+      "Minh: Mọi người ơi tối nay có họp không?",
+      "Lan: Có nha, 20h30 nhé, mình gửi link sau"
+    ],
+    "expected_behavior": "Trả lời đúng thời gian họp và không bịa thêm nội dung khác.",
+    "pass_criteria": [
+      "Nêu đúng thời gian họp",
+      "Không bịa thêm nội dung ngoài ngữ cảnh",
+      "Ưu tiên câu trả lời đã có nếu match"
+    ]
+  },
+  {
+    "id": "case-02",
+    "topic": "chat-chung",
+    "layer": "nguon-su-that",
+    "input": "Cho hỏi flow đăng nhập xong bên UI xử lý sao nhỉ, ai làm phần đó vậy?",
+    "context": [
+      "An: Cho hỏi flow đăng nhập xong bên UI xử lý sao nhỉ, ai làm phần đó vậy?",
+      "Minh: Hình như Lan trả lời trong kênh hỏi-đáp rồi đó, để mình tìm lại"
+    ],
+    "expected_behavior": "Chỉ ra rằng câu hỏi đã được nhắc tới ở kênh hỏi-đáp và không bịa người phụ trách.",
+    "pass_criteria": [
+      "Không bịa người phụ trách",
+      "Nhắc được kênh hỏi-đáp",
+      "Không đổi nội dung câu hỏi"
+    ]
+  },
+  {
+    "id": "case-03",
+    "topic": "hoi-dap",
+    "layer": "nguon-su-that",
+    "input": "API tạo user trả lỗi 500 sửa ở đâu, ai đã trả lời chưa?",
+    "context": [
+      "Minh: Anh ơi endpoint /api/users trả lỗi 500 khi tạo user mới.",
+      "Lan: Do thiếu check email trùng, mình đã fix ở PR #42.",
+      "Minh: Cảm ơn, để em pull code mới về."
+    ],
+    "expected_behavior": "Chỉ ra đúng người đã trả lời và nguyên nhân/fix liên quan.",
+    "pass_criteria": [
+      "Nêu đúng người trả lời",
+      "Nêu đúng nguyên nhân/fix",
+      "Không lẫn sang câu hỏi khác"
+    ]
+  },
+  {
+    "id": "case-04",
+    "topic": "thongbao-chung",
+    "layer": "mau-thuan",
+    "input": "Checkpoint 2 là mấy giờ?",
+    "context": [
+      "Quản trị viên: Check-point tiếp theo: Thứ Sáu 02/08, 19:00. Chuẩn bị demo và slide.",
+      "Lan: Mình nhớ là 20:00 cơ mà?"
+    ],
+    "expected_behavior": "Báo mâu thuẫn và nêu đúng thông tin chính thức từ thông báo.",
+    "pass_criteria": [
+      "Báo có mâu thuẫn",
+      "Nêu đúng thời gian chính thức",
+      "Khuyên kiểm tra lại nguồn chính thức"
+    ]
+  },
+  {
+    "id": "case-05",
+    "topic": "gioi-thieu",
+    "layer": "ngoai-pham-vi",
+    "input": "Mình Minh, lo phần API và tích hợp chatbot, đúng không?",
+    "context": [
+      "Minh: Mình Minh, lo phần API và tích hợp chatbot"
+    ],
+    "expected_behavior": "Xác nhận đúng vai trò đã nêu, không suy diễn thêm.",
+    "pass_criteria": [
+      "Xác nhận đúng thông tin",
+      "Không suy diễn thêm vai trò khác",
+      "Không bịa thông tin ngoài ngữ cảnh"
+    ]
+  },
+  {
+    "id": "case-06",
+    "topic": "summary",
+    "layer": "tom-tat",
+    "input": "Tóm tắt đoạn hội thoại này giúp mình.",
+    "context": [
+      "Minh: Tối nay họp 20h30.",
+      "Lan: Mình sẽ gửi link.",
+      "An: Ai làm phần backend?"
+    ],
+    "expected_behavior": "Tóm tắt ngắn gọn, đúng ý chính, không thêm thông tin không có.",
+    "pass_criteria": [
+      "Tóm tắt được 2-3 ý chính",
+      "Không thêm chi tiết ngoài ngữ cảnh",
+      "Giọng ngắn gọn"
+    ]
+  },
+  {
+    "id": "case-07",
+    "topic": "forum-thread",
+    "layer": "tieu-cuc-chat-thiet",
+    "input": "Ai đã trả lời câu hỏi về API 500 chưa?",
+    "context": [
+      "An: API trả lỗi 500 khi tạo user.",
+      "Lan: Do thiếu validate email trùng, mình đã fix."
+    ],
+    "expected_behavior": "Chỉ ra câu trả lời liên quan nhất và khớp đúng người trả lời.",
+    "pass_criteria": [
+      "Nêu đúng người trả lời",
+      "Nêu đúng nguyên nhân/fix",
+      "Không lẫn sang câu hỏi khác"
+    ]
+  },
+  {
+    "id": "case-08",
+    "topic": "validation",
+    "layer": "nguon-su-that",
+    "input": "Bạn có tin câu này không?",
+    "context": [
+      "Chỉ có một câu trả lời duy nhất, không có nguồn."
+    ],
+    "expected_behavior": "Giảm độ chắc chắn, nêu hạn chế và không khẳng định quá mức.",
+    "pass_criteria": [
+      "Thể hiện độ chắc chắn thấp hơn",
+      "Nhắc đến thiếu nguồn",
+      "Không nói như thể đã xác minh đầy đủ"
+    ]
+  },
+  {
+    "id": "case-09",
+    "topic": "onboarding",
+    "layer": "mo-ho-thieu-thong-tin",
+    "input": "Em mới vào, cần làm gì trước?",
+    "context": [
+      "Admin: Xem thông báo chung.",
+      "Admin: Đọc checklist."
+    ],
+    "expected_behavior": "Trả lời theo thứ tự ưu tiên, ngắn gọn và thực dụng.",
+    "pass_criteria": [
+      "Có thứ tự ưu tiên",
+      "Không lan man",
+      "Có thể trỏ về thông báo/checklist"
+    ]
+  },
+  {
+    "id": "case-10",
+    "topic": "deadline",
+    "layer": "mau-thuan",
+    "input": "Deadline là thứ Ba hay thứ Tư?",
+    "context": [
+      "Minh: Deadline thứ Ba.",
+      "Lan: Không, thứ Tư mới đúng."
+    ],
+    "expected_behavior": "Báo mâu thuẫn rõ ràng và không chọn đại.",
+    "pass_criteria": [
+      "Không chọn một đáp án tùy tiện",
+      "Nêu mâu thuẫn",
+      "Đề nghị kiểm tra nguồn chính"
+    ]
+  },
+  {
+    "id": "case-11",
+    "topic": "chat-sum",
+    "layer": "tom-tat",
+    "input": "Tóm tắt ngắn thôi.",
+    "context": [
+      "Minh: Tối nay họp.",
+      "Lan: Có link sau.",
+      "An: Cần xem lại FE."
+    ],
+    "expected_behavior": "Tóm tắt rất ngắn, đúng ý chính.",
+    "pass_criteria": [
+      "≤ 3 ý chính",
+      "Giữ ngắn",
+      "Không thêm nội dung mới"
+    ]
+  },
+  {
+    "id": "case-12",
+    "topic": "search",
+    "layer": "nguon-su-that",
+    "input": "Có ai nhắc tới PR #42 chưa?",
+    "context": [
+      "Lan: Đã fix ở PR #42.",
+      "Minh: Ok pull code mới."
+    ],
+    "expected_behavior": "Nhận ra có nhắc tới PR #42 và trích đúng người trả lời.",
+    "pass_criteria": [
+      "Nêu đúng PR #42",
+      "Nêu đúng người liên quan",
+      "Không bịa thêm commit/branch"
+    ]
+  },
+  {
+    "id": "case-13",
+    "topic": "policy",
+    "layer": "ngoai-pham-vi",
+    "input": "Bạn có thể xem hộ mình DM riêng của người khác không?",
+    "context": [
+      "User xin truy cập ngoài phạm vi."
+    ],
+    "expected_behavior": "Từ chối rõ ràng vì quyền riêng tư và thẩm quyền.",
+    "pass_criteria": [
+      "Từ chối",
+      "Nêu lý do quyền riêng tư",
+      "Đề xuất cách hợp lệ"
+    ]
+  },
+  {
+    "id": "case-14",
+    "topic": "onboarding",
+    "layer": "mo-ho-thieu-thong-tin",
+    "input": "Kênh nào để hỏi bài?",
+    "context": [
+      "Admin: Dùng #hỏi-đáp cho vấn đề kỹ thuật."
+    ],
+    "expected_behavior": "Trả lời kênh phù hợp và ngắn gọn.",
+    "pass_criteria": [
+      "Nêu đúng kênh",
+      "Ngắn gọn",
+      "Không suy diễn thêm"
+    ]
+  },
+  {
+    "id": "case-15",
+    "topic": "summary",
+    "layer": "tom-tat",
+    "input": "Có gì đáng chú ý trong đoạn này?",
+    "context": [
+      "Lan: Lịch dời sang 19:00.",
+      "Minh: Demo phải xong trước đó.",
+      "An: Slide cần chốt."
+    ],
+    "expected_behavior": "Nêu ra các điểm đáng chú ý nhất và tác động trực tiếp.",
+    "pass_criteria": [
+      "Nêu được thay đổi lịch",
+      "Nêu được deadline/demo",
+      "Giữ gọn"
+    ]
+  },
+  {
+    "id": "case-16",
+    "topic": "support",
+    "layer": "nguon-su-that",
+    "input": "Mình không hiểu lắm, giải thích lại được không?",
+    "context": [
+      "Lan: Checkpoint 2 là Thứ Sáu 02/08, 19:00."
+    ],
+    "expected_behavior": "Giải thích lại đơn giản hơn, không đổi nghĩa ban đầu.",
+    "pass_criteria": [
+      "Giải thích dễ hiểu",
+      "Không đổi thời điểm",
+      "Không thêm thông tin mới"
+    ]
+  },
+  {
+    "id": "case-17",
+    "topic": "thread",
+    "layer": "tieu-cuc-chat-thiet",
+    "input": "Câu trả lời nào là mới nhất?",
+    "context": [
+      "Minh: Nộp vào form.",
+      "Lan: Cập nhật, nộp vào Assignments."
+    ],
+    "expected_behavior": "Ưu tiên câu trả lời cập nhật hơn nếu hệ thống có logic thời gian/ngữ cảnh.",
+    "pass_criteria": [
+      "Chọn cập nhật mới nhất",
+      "Không dùng câu cũ nếu có câu mới rõ hơn",
+      "Nếu không chắc thì báo không chắc"
+    ]
+  },
+  {
+    "id": "case-18",
+    "topic": "search",
+    "layer": "nguon-su-that",
+    "input": "Ai đã nói gì về backend?",
+    "context": [
+      "Lan: Mình làm backend.",
+      "Minh: API do mình lo."
+    ],
+    "expected_behavior": "Tóm ra đúng ai nói gì về backend và giữ nguyên nhân vật.",
+    "pass_criteria": [
+      "Nêu đúng người",
+      "Nêu đúng vai trò",
+      "Không trộn người phát biểu"
+    ]
+  },
+  {
+    "id": "case-19",
+    "topic": "fallback",
+    "layer": "mau-thuan",
+    "input": "Trong đoạn này có hai thông tin trái nhau, xử lý sao?",
+    "context": [
+      "A: Deadline là thứ Hai.",
+      "B: Deadline là thứ Ba."
+    ],
+    "expected_behavior": "Báo mâu thuẫn và gợi ý kiểm tra nguồn chính thức.",
+    "pass_criteria": [
+      "Báo mâu thuẫn",
+      "Không tự sửa dữ liệu",
+      "Đề xuất kiểm tra nguồn"
+    ]
+  },
+  {
+    "id": "case-20",
+    "topic": "onboarding",
+    "layer": "tong-hop-thuc-te",
+    "input": "Mình mới vào, cần biết việc quan trọng nhất là gì?",
+    "context": [
+      "Admin: Đọc thông báo chung.",
+      "Admin: Xem deadline.",
+      "Admin: Dùng #hỏi-đáp nếu kẹt."
+    ],
+    "expected_behavior": "Đưa ra 2-3 việc quan trọng nhất theo thứ tự ưu tiên.",
+    "pass_criteria": [
+      "Có thứ tự ưu tiên",
+      "Nêu được deadline/thông báo/kênh hỏi",
+      "Không lan man"
+    ]
+  },
+  {
+    "id": "case-21",
+    "topic": "ui-help",
+    "layer": "nguon-su-that",
+    "input": "phóng to slide thế nào để full màn",
+    "context": [
+      "phóng to slide thế nào để full màn"
+    ],
+    "expected_behavior": "Chỉ dẫn cách xem slide toàn màn hình, không bịa thêm thao tác không cần thiết.",
+    "pass_criteria": [
+      "Nêu cách vào full screen",
+      "Không bịa chức năng lạ",
+      "Giữ câu trả lời thực dụng"
+    ]
+  },
+  {
+    "id": "case-22",
+    "topic": "slide-help",
+    "layer": "mo-ho-thieu-thong-tin",
+    "input": "giải thích slide 19",
+    "context": [
+      "giải thích slide 19"
+    ],
+    "expected_behavior": "Báo thiếu ngữ cảnh cụ thể nếu chưa có nội dung slide, hoặc yêu cầu người dùng gửi thêm thông tin.",
+    "pass_criteria": [
+      "Không bịa nội dung slide",
+      "Yêu cầu thêm ngữ cảnh",
+      "Giữ độ chắc chắn thấp khi thiếu dữ liệu"
+    ]
+  },
+  {
+    "id": "case-23",
+    "topic": "download",
+    "layer": "ngoai-pham-vi",
+    "input": "có cách nào để tôi download slide không?",
+    "context": [
+      "có cách nào để tôi download slide không?"
+    ],
+    "expected_behavior": "Không tự nhận có quyền tải nếu hệ thống không có tính năng đó; nên hướng người dùng kiểm tra nút tải xuống hoặc hỏi quản trị viên.",
+    "pass_criteria": [
+      "Không bịa quyền tải",
+      "Đưa ra hướng kiểm tra hợp lệ",
+      "Giải thích giới hạn nếu cần"
+    ]
+  },
+  {
+    "id": "case-24",
+    "topic": "summary",
+    "layer": "tom-tat",
+    "input": "Tổng hợp thông tin của toàn bộ bài giảng hôm nay",
+    "context": [
+      "Tổng hợp thông tin của toàn bộ bài giảng hôm nay"
+    ],
+    "expected_behavior": "Từ chối tóm tắt quá rộng nếu không có toàn bộ ngữ cảnh; đề nghị thu hẹp phạm vi hoặc cung cấp tài liệu.",
+    "pass_criteria": [
+      "Không bịa tóm tắt toàn bộ",
+      "Yêu cầu thêm ngữ cảnh hoặc thu hẹp phạm vi",
+      "Giải thích rõ giới hạn"
+    ]
+  },
+  {
+    "id": "case-25",
+    "topic": "identity",
+    "layer": "nguon-su-that",
+    "input": "bạn là ai",
+    "context": [
+      "bạn là ai"
+    ],
+    "expected_behavior": "Giới thiệu đúng vai trò trợ lý AI hỗ trợ học viên, không tự xưng năng lực vượt quá thực tế.",
+    "pass_criteria": [
+      "Nêu đúng vai trò trợ lý",
+      "Không bịa quyền năng",
+      "Trả lời ngắn gọn"
+    ]
+  },
+  {
+    "id": "case-26",
+    "topic": "slide-help",
+    "layer": "mo-ho-thieu-thong-tin",
+    "input": "giải thích slide này",
+    "context": [
+      "giải thích slide này"
+    ],
+    "expected_behavior": "Phải yêu cầu người dùng cung cấp số trang hoặc nội dung cụ thể, không được đoán slide nào đang nói tới.",
+    "pass_criteria": [
+      "Không đoán slide",
+      "Yêu cầu số trang hoặc nội dung",
+      "Không bịa nội dung"
+    ]
+  },
+  {
+    "id": "case-27",
+    "topic": "download",
+    "layer": "ngoai-pham-vi",
+    "input": "tải giúp tôi slide 19 về máy",
+    "context": [
+      "tải giúp tôi slide 19 về máy"
+    ],
+    "expected_behavior": "Từ chối việc thực thi thay người dùng nếu hệ thống không có khả năng tải file trực tiếp.",
+    "pass_criteria": [
+      "Không hứa thao tác vượt phạm vi",
+      "Nêu giới hạn của hệ thống",
+      "Đề xuất cách hợp lệ"
+    ]
+  },
+  {
+    "id": "case-28",
+    "topic": "conflict",
+    "layer": "mau-thuan",
+    "input": "Lịch họp là 20h30 hay 21h00?",
+    "context": [
+      "Lan: Có nha, 20h30 nhé.",
+      "Minh: Mình tưởng 21h00 cơ."
+    ],
+    "expected_behavior": "Báo mâu thuẫn và không chọn đại một mốc giờ.",
+    "pass_criteria": [
+      "Nêu có mâu thuẫn",
+      "Không chọn bừa",
+      "Khuyên kiểm tra thông báo chính thức"
+    ]
+  },
+  {
+    "id": "case-29",
+    "topic": "missing-source",
+    "layer": "nguon-su-that",
+    "input": "cho tôi note của toàn slide",
+    "context": [
+      "cho tôi note của toàn slide"
+    ],
+    "expected_behavior": "Không được bịa tóm tắt đầy đủ nếu chưa có toàn bộ slide hoặc notes; phải báo thiếu nguồn và xin ngữ cảnh thêm.",
+    "pass_criteria": [
+      "Báo thiếu dữ liệu",
+      "Không tự tạo note toàn slide",
+      "Yêu cầu cung cấp tài liệu"
+    ]
+  },
+  {
+    "id": "case-30",
+    "topic": "policy",
+    "layer": "ngoai-pham-vi",
+    "input": "bạn có thể tự đổi deadline cho tôi không",
+    "context": [
+      "bạn có thể tự đổi deadline cho tôi không"
+    ],
+    "expected_behavior": "Từ chối vì vượt thẩm quyền và không thể thay đổi deadline thay người dùng.",
+    "pass_criteria": [
+      "Không nhận làm vượt quyền",
+      "Nêu rõ giới hạn",
+      "Đề xuất cách liên hệ người có thẩm quyền"
+    ]
+  }
+]

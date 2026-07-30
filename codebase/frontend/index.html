@@ -787,7 +787,7 @@
     composerInput.value = "";
     updateSendState();
     render();
-    if(MENTION_RE.test(val)){ respondAsBot(targetList); }
+    if(MENTION_RE.test(val)){ respondAsBot(targetList, val); }
   }
   composerSend.addEventListener("click", postOwnMessage);
   composerInput.addEventListener("keydown", function(e){
@@ -805,18 +805,27 @@
     composerInput.setSelectionRange(composerInput.value.length, composerInput.value.length);
   });
 
-  function respondAsBot(targetList){
+  function respondAsBot(targetList, question){
     var placeholder = {a:"Trợ lý AI", role:"BOT", t:nowShort(), typing:true};
     targetList.push(placeholder);
     render();
-    setTimeout(function(){
+    callAssistantBackend(question, getVisibleContextText()).then(function(payload){
       var idx = targetList.indexOf(placeholder);
       if(idx===-1) return;
-      var ans = buildAnswer("", "");
+      var text = payload.answer || "Chưa có câu trả lời.";
+      if(payload.matched_question){
+        text += "\n↳ Khớp câu hỏi cũ: " + payload.matched_question;
+      }
+      targetList[idx] = {a:"Trợ lý AI", role:"BOT", t:nowShort(), m:text};
+      render();
+    }).catch(function(){
+      var idx = targetList.indexOf(placeholder);
+      if(idx===-1) return;
+      var ans = buildAnswer(question, getVisibleContextText());
       var text = ans.body + (ans.source ? "\n↳ "+ans.source.replace(/<\/?b>/g,"") : "");
       targetList[idx] = {a:"Trợ lý AI", role:"BOT", t:nowShort(), m:text};
       render();
-    }, 750);
+    });
   }
 
   /* ---- AI panel ---- */
@@ -851,6 +860,70 @@
   function nowLabel(){
     var d = new Date();
     return "Vừa xong · "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+  }
+
+  var API_BASE = window.location.origin;
+
+  function getVisibleContextText(){
+    var mode = getMode();
+    if(mode === "post-detail"){
+      var post = getPost(activeChan, activePost);
+      var lines = [];
+      lines.push("Bài đăng: " + post.title);
+      lines.push("Nội dung: " + post.body);
+      post.replies.forEach(function(r){
+        lines.push(r.a + ": " + r.m);
+      });
+      return lines.join("\n");
+    }
+
+    if(mode === "forum-list"){
+      var posts = CHANNELS[activeChan].posts.map(function(p){
+        return "- " + p.title + ": " + p.body;
+      });
+      return posts.join("\n");
+    }
+
+    return CHANNELS[activeChan].messages.map(function(m){
+      return m.a + ": " + m.m;
+    }).join("\n");
+  }
+
+  function renderAssistantResult(payload){
+    var html = '<div class="result-card">';
+    html += '<div class="rhead"><span class="rmode">' + escapeHtml(payload.mode || "Kết quả") + '</span><span class="rtime">' + nowLabel() + '</span></div>';
+    html += '<div class="rbody">Câu hỏi: “' + escapeHtml(payload.question || "") + '”\n\n' + escapeHtml(payload.answer || "Chưa có câu trả lời.") + '</div>';
+    if(payload.matched_question){
+      html += '<div class="rsource">↳ Khớp câu hỏi cũ: <b>' + escapeHtml(payload.matched_question) + '</b></div>';
+    } else if(payload.record && payload.record.source){
+      html += '<div class="rsource">↳ Nguồn: <b>' + escapeHtml(payload.record.source) + '</b></div>';
+    }
+    html += '</div>';
+    resultArea.innerHTML = html;
+  }
+
+  async function callAssistantBackend(question, doc){
+    var body = {
+      question: question,
+      topic: CHANNELS[activeChan].topic || "general",
+      messages: doc || getVisibleContextText(),
+      threshold: 0.4,
+      history: getMode() === "chat" ? CHANNELS[activeChan].messages : (getMode() === "post-detail" ? getPost(activeChan, activePost).replies : CHANNELS[activeChan].posts)
+    };
+
+    var resp = await fetch(API_BASE + "/api/assistant", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    });
+
+    if(!resp.ok){
+      throw new Error("Backend trả lỗi " + resp.status);
+    }
+
+    return await resp.json();
   }
 
   function buildAnswer(question, doc){
@@ -909,18 +982,20 @@
     askBtn.disabled = true;
     resultArea.innerHTML = '<div class="loading"><span class="spinner"></span> Trợ lý AI đang phân tích'+(doc?" tài liệu":"")+'...</div>';
 
-    setTimeout(function(){
-      var ans = buildAnswer(question, doc);
-      var html = '<div class="result-card">';
-      html += '<div class="rhead"><span class="rmode">'+ans.mode+'</span><span class="rtime">'+nowLabel()+'</span></div>';
-      html += '<div class="rbody">Câu hỏi: “'+escapeHtml(question)+'”\n\n'+escapeHtml(ans.body)+'</div>';
-      if(ans.source){
-        html += '<div class="rsource">↳ '+ans.source+'</div>';
-      }
-      html += '</div>';
-      resultArea.innerHTML = html;
+    callAssistantBackend(question, doc).then(function(payload){
+      payload.question = question;
+      renderAssistantResult(payload);
       askBtn.disabled = false;
-    }, 750);
+    }).catch(function(err){
+      var ans = buildAnswer(question, doc);
+      renderAssistantResult({
+        question: question,
+        mode: "Fallback local",
+        answer: ans.body + (ans.source ? "\n↳ " + ans.source.replace(/<\/?b>/g,"") : "")
+      });
+      qHint.textContent = "Không gọi được backend: " + err.message + ". Đã dùng fallback local.";
+      askBtn.disabled = false;
+    });
   });
 
   render();

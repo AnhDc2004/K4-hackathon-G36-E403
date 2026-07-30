@@ -1,0 +1,312 @@
+[
+  {
+    "id": "q001",
+    "question": "Em nộp bài ở đâu?",
+    "normalized_question": "nop bai o dau",
+    "answer": "Bạn nộp bài trong mục Assignments trên Discord.",
+    "topic": "submission",
+    "created_at": "2026-07-30T00:00:00Z",
+    "source": "seed",
+    "similar_questions": []
+  },
+  {
+    "id": "q002",
+    "question": "Khi nào là deadline?",
+    "normalized_question": "deadline khi nao",
+    "answer": "Deadline hiện tại là thứ Hai lúc 23:59.",
+    "topic": "deadline",
+    "created_at": "2026-07-30T00:00:00Z",
+    "source": "seed",
+    "similar_questions": []
+  },
+  {
+    "id": "q003",
+    "question": "Tóm tắt đoạn hội thoại này giúp mình",
+    "normalized_question": "tom tat oan hoi thoai nay giup minh",
+    "answer": "",
+    "topic": "Trò chuyện chung của cả nhóm",
+    "created_at": "2026-07-30T17:15:18.308447+00:00",
+    "source": "gemini",
+    "similar_questions": []
+  },
+  {
+    "id": "q004",
+    "question": "Cho mình biết quy trình onboarding chi tiết nhé.",
+    "normalized_question": "cho minh biet quy trinh onboarding chi tiet nhe",
+    "answer": "Offline eval: \"Cho mình biết quy trình onboarding chi tiết nhé.\" | topic=onboarding",
+    "topic": "onboarding",
+    "created_at": "2026-07-30T17:29:03.806187+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q005",
+    "question": "Tự động đăng bài lên lịch giúp mình nhé.",
+    "normalized_question": "tu ong ang bai len lich giup minh nhe",
+    "answer": "Offline eval: \"Tự động đăng bài lên lịch giúp mình nhé.\" | topic=support",
+    "topic": "support",
+    "created_at": "2026-07-30T17:29:03.806899+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q006",
+    "question": "Ai đã trả lời câu hỏi về API 500 chưa?",
+    "normalized_question": "ai a tra loi cau hoi ve api 500 chua",
+    "answer": "Offline eval: \"Ai đã trả lời câu hỏi về API 500 chưa?\" | topic=forum-thread",
+    "topic": "forum-thread",
+    "created_at": "2026-07-30T17:29:03.807998+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q007",
+    "question": "Bạn có tin câu này không?",
+    "normalized_question": "ban co tin cau nay khong",
+    "answer": "Offline eval: \"Bạn có tin câu này không?\" | topic=validation",
+    "topic": "validation",
+    "created_at": "2026-07-30T17:29:03.809434+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q008",
+    "question": "Em mới vào, cần làm gì trước?",
+    "normalized_question": "em moi vao can lam gi truoc",
+    "answer": "Offline eval: \"Em mới vào, cần làm gì trước?\" | topic=onboarding",
+    "topic": "onboarding",
+    "created_at": "2026-07-30T17:29:03.809901+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q009",
+    "question": "Deadline là thứ Ba hay thứ Tư?",
+    "normalized_question": "deadline la thu ba hay thu tu",
+    "answer": "Offline eval: \"Deadline là thứ Ba hay thứ Tư?\" | topic=deadline",
+    "topic": "deadline",
+    "created_at": "2026-07-30T17:29:03.810641+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q010",
+    "question": "Tóm tắt ngắn thôi.",
+    "normalized_question": "tom tat ngan thoi",
+    "answer": "Offline eval: \"Tóm tắt ngắn thôi.\" | topic=chat-sum",
+    "topic": "chat-sum",
+    "created_at": "2026-07-30T17:29:03.811348+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q011",
+    "question": "Có ai nhắc tới PR #42 chưa?",
+    "normalized_question": "co ai nhac toi pr 42 chua",
+    "answer": "Offline eval: \"Có ai nhắc tới PR #42 chưa?\" | topic=search",
+    "topic": "search",
+    "created_at": "2026-07-30T17:29:03.812432+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q012",
+    "question": "Bạn có thể xem hộ mình DM riêng của người khác không?",
+    "normalized_question": "ban co the xem ho minh dm rieng cua nguoi khac khong",
+    "answer": "Offline eval: \"Bạn có thể xem hộ mình DM riêng của người khác không?\" | topic=policy",
+    "topic": "policy",
+    "created_at": "2026-07-30T17:29:03.813195+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q013",
+    "question": "Kênh nào để hỏi bài?",
+    "normalized_question": "kenh nao e hoi bai",
+    "answer": "Offline eval: \"Kênh nào để hỏi bài?\" | topic=onboarding",
+    "topic": "onboarding",
+    "created_at": "2026-07-30T17:29:03.813975+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q014",
+    "question": "Có gì đáng chú ý trong đoạn này?",
+    "normalized_question": "co gi ang chu y trong oan nay",
+    "answer": "Offline eval: \"Có gì đáng chú ý trong đoạn này?\" | topic=summary",
+    "topic": "summary",
+    "created_at": "2026-07-30T17:29:03.814951+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q015",
+    "question": "Mình không hiểu lắm, giải thích lại được không?",
+    "normalized_question": "minh khong hieu lam giai thich lai uoc khong",
+    "answer": "Offline eval: \"Mình không hiểu lắm, giải thích lại được không?\" | topic=support",
+    "topic": "support",
+    "created_at": "2026-07-30T17:29:03.815751+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q016",
+    "question": "Câu trả lời nào là mới nhất?",
+    "normalized_question": "cau tra loi nao la moi nhat",
+    "answer": "Offline eval: \"Câu trả lời nào là mới nhất?\" | topic=thread",
+    "topic": "thread",
+    "created_at": "2026-07-30T17:29:03.816551+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q017",
+    "question": "Ai đã nói gì về backend?",
+    "normalized_question": "ai a noi gi ve backend",
+    "answer": "Offline eval: \"Ai đã nói gì về backend?\" | topic=search",
+    "topic": "search",
+    "created_at": "2026-07-30T17:29:03.817537+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q018",
+    "question": "Trong đoạn này có hai thông tin trái nhau, xử lý sao?",
+    "normalized_question": "trong oan nay co hai thong tin trai nhau xu ly sao",
+    "answer": "Offline eval: \"Trong đoạn này có hai thông tin trái nhau, xử lý sao?\" | topic=fallback",
+    "topic": "fallback",
+    "created_at": "2026-07-30T17:29:03.818522+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q019",
+    "question": "Mình mới vào, cần biết việc quan trọng nhất là gì?",
+    "normalized_question": "minh moi vao can biet viec quan trong nhat la gi",
+    "answer": "Offline eval: \"Mình mới vào, cần biết việc quan trọng nhất là gì?\" | topic=onboarding",
+    "topic": "onboarding",
+    "created_at": "2026-07-30T17:29:03.819560+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q020",
+    "question": "Mọi người ơi tối nay có họp không?",
+    "normalized_question": "moi nguoi oi toi nay co hop khong",
+    "answer": "Offline eval: \"Mọi người ơi tối nay có họp không?\" | topic=chat-chung",
+    "topic": "chat-chung",
+    "created_at": "2026-07-30T17:40:42.550588+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q021",
+    "question": "Cho hỏi flow đăng nhập xong bên UI xử lý sao nhỉ, ai làm phần đó vậy?",
+    "normalized_question": "cho hoi flow ang nhap xong ben ui xu ly sao nhi ai lam phan o vay",
+    "answer": "Offline eval: \"Cho hỏi flow đăng nhập xong bên UI xử lý sao nhỉ, ai làm phần đó vậy?\" | topic=chat-chung",
+    "topic": "chat-chung",
+    "created_at": "2026-07-30T17:40:42.552602+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q022",
+    "question": "Checkpoint 2 là mấy giờ?",
+    "normalized_question": "checkpoint 2 la may gio",
+    "answer": "Offline eval: \"Checkpoint 2 là mấy giờ?\" | topic=thongbao-chung",
+    "topic": "thongbao-chung",
+    "created_at": "2026-07-30T17:40:42.555010+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q023",
+    "question": "Mình Minh, lo phần API và tích hợp chatbot, đúng không?",
+    "normalized_question": "minh minh lo phan api va tich hop chatbot ung khong",
+    "answer": "Offline eval: \"Mình Minh, lo phần API và tích hợp chatbot, đúng không?\" | topic=gioi-thieu",
+    "topic": "gioi-thieu",
+    "created_at": "2026-07-30T17:40:42.556183+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q024",
+    "question": "phóng to slide thế nào để full màn",
+    "normalized_question": "phong to slide the nao e full man",
+    "answer": "Offline eval: \"phóng to slide thế nào để full màn\" | topic=ui-help",
+    "topic": "ui-help",
+    "created_at": "2026-07-30T17:43:58.601894+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q025",
+    "question": "giải thích slide 19",
+    "normalized_question": "giai thich slide 19",
+    "answer": "Offline eval: \"giải thích slide 19\" | topic=slide-help",
+    "topic": "slide-help",
+    "created_at": "2026-07-30T17:43:58.603321+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q026",
+    "question": "có cách nào để tôi download slide không?",
+    "normalized_question": "co cach nao e toi download slide khong",
+    "answer": "Offline eval: \"có cách nào để tôi download slide không?\" | topic=download",
+    "topic": "download",
+    "created_at": "2026-07-30T17:43:58.604527+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q027",
+    "question": "Tổng hợp thông tin của toàn bộ bài giảng hôm nay",
+    "normalized_question": "tong hop thong tin cua toan bo bai giang hom nay",
+    "answer": "Offline eval: \"Tổng hợp thông tin của toàn bộ bài giảng hôm nay\" | topic=summary",
+    "topic": "summary",
+    "created_at": "2026-07-30T17:43:58.605707+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q028",
+    "question": "bạn là ai",
+    "normalized_question": "ban la ai",
+    "answer": "Offline eval: \"bạn là ai\" | topic=identity",
+    "topic": "identity",
+    "created_at": "2026-07-30T17:43:58.606673+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q029",
+    "question": "tải giúp tôi slide 19 về máy",
+    "normalized_question": "tai giup toi slide 19 ve may",
+    "answer": "Offline eval: \"tải giúp tôi slide 19 về máy\" | topic=download",
+    "topic": "download",
+    "created_at": "2026-07-30T17:48:20.514043+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q030",
+    "question": "Lịch họp là 20h30 hay 21h00?",
+    "normalized_question": "lich hop la 20h30 hay 21h00",
+    "answer": "Offline eval: \"Lịch họp là 20h30 hay 21h00?\" | topic=conflict",
+    "topic": "conflict",
+    "created_at": "2026-07-30T17:48:20.517049+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  },
+  {
+    "id": "q031",
+    "question": "cho tôi note của toàn slide",
+    "normalized_question": "cho toi note cua toan slide",
+    "answer": "Offline eval: \"cho tôi note của toàn slide\" | topic=missing-source",
+    "topic": "missing-source",
+    "created_at": "2026-07-30T17:48:20.518385+00:00",
+    "source": "offline-fallback",
+    "similar_questions": []
+  }
+]

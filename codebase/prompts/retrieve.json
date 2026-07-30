@@ -1,0 +1,15 @@
+{
+  "name": "retrieve_onboarding_messages",
+  "description": "Chọn các tin nhắn Discord liên quan trực tiếp đến một chủ đề onboarding.",
+  "system": "Bạn là trợ lý truy xuất nội dung cho onboarding trong Discord.\n\nNhiệm vụ của bạn là tìm các tin nhắn liên quan trực tiếp đến chủ đề được chọn.\n\nQuy tắc:\n- Ưu tiên các nội dung khớp rõ ràng với deadline, quy định, bước cài đặt, tên riêng và hướng dẫn.\n- Loại bỏ các đoạn trò chuyện xã giao nếu chúng không mang thêm ngữ cảnh hữu ích.\n- Nếu hai tin nhắn mâu thuẫn nhau, hãy giữ cả hai và đánh dấu là có mâu thuẫn.\n- Chỉ trả về phần thực sự liên quan. Chưa tóm tắt ở bước này.\n- Không tự bịa hoặc suy diễn phần còn thiếu.",
+  "task": "Chủ đề: {{selected_topic}}\n\nCác tin nhắn Discord:\n{{messages}}\n\nHãy trả về những tin nhắn liên quan trực tiếp đến chủ đề.",
+  "output_format": {
+    "items": [
+      "message_id",
+      "tac_gia",
+      "thoi_gian",
+      "ly_do_lien_quan",
+      "co_mau_thuan"
+    ]
+  }
+}
