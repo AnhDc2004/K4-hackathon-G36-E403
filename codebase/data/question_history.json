@@ -1054,5 +1054,38 @@
     "source": "gemini",
     "intent": "answer",
     "similar_questions": []
+  },
+  {
+    "id": "q100",
+    "question": "@Trợ lý AI tóm tắt cho tôi nội dung day02",
+    "normalized_question": "tro ly ai tom tat cho toi noi dung day02",
+    "answer": "Xin lỗi, hiện tại tôi không có thông tin nào về nội dung day02 để tóm tắt.",
+    "topic": "Trò chuyện chung của cả nhóm",
+    "created_at": "2026-07-31T07:13:43.434814+00:00",
+    "source": "gemini",
+    "intent": "summarize",
+    "similar_questions": []
+  },
+  {
+    "id": "q101",
+    "question": "@Trợ lý AI tóm tắt xem mấy thằng kia nó nói chi rứa",
+    "normalized_question": "tro ly ai tom tat xem may thang kia no noi chi rua",
+    "answer": "Không có dữ liệu để tóm tắt nội dung cuộc trò chuyện hiện tại.\n\nKhông có dữ liệu để tóm tắt.",
+    "topic": "Trò chuyện chung của cả nhóm",
+    "created_at": "2026-07-31T07:14:21.425825+00:00",
+    "source": "gemini",
+    "intent": "summarize",
+    "similar_questions": []
+  },
+  {
+    "id": "q102",
+    "question": "@Trợ lý AI tóm tắt xem mấy thằng kia nó nói gì",
+    "normalized_question": "tro ly ai tom tat xem may thang kia no noi gi",
+    "answer": "Xin lỗi, hiện tại tôi không có dữ liệu để tóm tắt nội dung cuộc trò chuyện.\n\nKhông có tin nhắn trong ngữ cảnh được cung cấp.",
+    "topic": "Trò chuyện chung của cả nhóm",
+    "created_at": "2026-07-31T07:14:41.971152+00:00",
+    "source": "gemini",
+    "intent": "summarize",
+    "similar_questions": []
   }
 ]

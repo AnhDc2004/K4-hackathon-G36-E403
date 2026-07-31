@@ -33,6 +33,28 @@
   ],
   "items": [
     {
+      "id": "post-bai-hoc-8",
+      "channel_id": "bai-hoc",
+      "type": "post",
+      "title": "[T-121] DeepSeek V4 Flash hay GPT-4o-mini? Model nào phục vụ mục đích học tập phù hợp hơn?",
+      "author": "hoàng",
+      "content": "tl;dr: Bỏ gpt-4o-mini đi, thay vào đó hãy dùng deepseek. 78 vnd/1m cache hit.\nCá nhân mình đã dùng thử khá nhiều model để phục vụ mục đích chạy product AI thật cho doanh nghiệp, từ những model hàng đầu (tại thời điểm đó) như GPT 5.4 cho đến các model rẻ hay self-host như deepseek. Mình đánh giá rằng, hiện nay, các model có mức \"thông minh\" ngang ngửa nhau rồi, việc duy nhất chúng ta cần chọn là chọn model nào phù hợp ví tiền nhất thôi.\n\nNgay từ buổi học đầu tiên, mình may mắn trúng giải thưởng 1 key api OpenAI 2$ từ các anh coach lab. Mình khá là vui và vẫn sử dụng cho đến hiện tại. Tuy nhiên, trong quá trình sử dụng model gpt-4o-mini giống trong các bài tập trước, mình đánh giá mặc dù model này rẻ hơn các model còn lại (so với model trong họ OpenAI) thì nó khá là ngu. Không đáp ứng được hết nhu cầu của mình. Ban đầu mình nghĩ là thời đại hiện tại thì phần lớn các model chả còn model nào ngu nữa, nên vấn đề có thể nằm ở system prompt. Sau khi cho Claude sửa lên sửa xuống, Claude khuyên mình đổi model. Là một con đỗ nghèo khỉ, mình lấy key test của công ty dùng thử. Phải nói là nó khác hẳn, chất lượng output vượt xa những gì quả gpt 4o kia. Chưa kể giá input và giá output cũng rẻ hơn rất nhiều. FYI, model gpt-4o-mini không có cache, tức là mỗi lần bạn request, input của bạn sẽ bị tính 0.15$ thay vì 0.0028$ như khi deepseek cache hit.\n\nCòn nếu nói về phần cache thì model duy nhất mà có cơ chế cache hiện đại hơn deepseek là dòng model xịn nhất của OpenAI hiện đại (5.6) với explicit cache. Đấy là trải nghiệm, còn benchmark thì khỏi phải nói, chúng ta còn không tìm thấy gpt-4o đâu.\n\nHiện tại, mình cũng làm rất nhiều bên và điểm chung của họ là họ đều hài lòng với model DeepSeek hiện tại với các công việc từ cơ bản đến nâng cao nên không phải quá lo đâu nhé.",
+      "created_at": "2026-07-31T07:15:04.066770+00:00",
+      "source_url": "/#channel/bai-hoc/post/post-bai-hoc-8",
+      "replies": []
+    },
+    {
+      "id": "post-chia-se-7",
+      "channel_id": "chia-se",
+      "type": "post",
+      "title": "Chia sẻ một chút về Data Lake trong AI hỗ trợ nghiên cứu khoa học",
+      "author": "hoàng",
+      "content": "Trước đây mình từng làm nghiên cứu với đề tài \"Xây dựng mô hình Data Lake cho hệ thống RAG trong tìm kiếm và phân tích bài báo học thuật\". Trong quá trình tìm hiểu, mình đã tổng hợp khá nhiều tài liệu về Data Lake và nhờ AI hỗ trợ hệ thống hóa lại kiến thức. Thấy nội dung khá hữu ích nên mình chia sẻ lại để mọi người cùng tham khảo.\n\nMột điều mình nhận ra là khi nhắc đến AI, nhiều người sẽ nghĩ ngay đến LLM, RAG hay Agent. Tuy nhiên, nếu muốn xây dựng một hệ thống AI có thể khai thác hàng triệu tài liệu nghiên cứu thì Data Lake lại là nền tảng rất quan trọng.\n\nData Lake là nơi lưu trữ toàn bộ dữ liệu gốc như PDF, dataset, hình ảnh, mã nguồn, metadata... mà không cần chuẩn hóa ngay từ đầu. Sau đó dữ liệu sẽ được đưa qua các bước như OCR, parsing, chunking, tạo embedding rồi mới lưu vào Vector Database để phục vụ RAG.\n\nMột kiến trúc phổ biến sẽ có dạng:\nNguồn dữ liệu → Data Lake → Tiền xử lý → Vector Database → LLM/Agent → Người dùng\n\nViệc tách Data Lake khỏi Vector Database mang lại nhiều lợi ích:\nLưu trữ dữ liệu gốc lâu dài.\nDễ bổ sung nguồn dữ liệu mới.\nCó thể tạo lại embedding khi đổi model mà không phải thu thập dữ liệu từ đầu.\nHỗ trợ phân tích dữ liệu ngoài bài toán RAG.\n\nNếu đang xây dựng AI hỏi đáp tài liệu, chatbot nội bộ hay hệ thống hỗ trợ nghiên cứu khoa học thì mình nghĩ đây là một kiến trúc đáng để tìm hiểu.\n\nTài liệu tham khảo:\nAgarwal, S., Laradji, I.H., Charlin, L. and Pal, C. (2024), ‘LitLLM: A Toolkit for\nScientific Literature Review’, arXiv, từ https://arxiv.org/abs/2402.01788.\n Chang, Y., Wang, X., Wang, J., Wu, Y., Zhu, K., Chen, H., Yang, L., Yi, X., Wang, C.,Wang, Y., Ye, W., Zhang, Y., Chang, Y., Yu, P.S., Yang, Q. and Xie, X. (2023), ‘ASurvey on Evaluation of Large Language Models’, ACM Transactions on Intelligent Systems and Technology, tập 15, tr. 1–45.\n\nHy vọng những tài liệu này sẽ hữu ích với mọi người. Nếu anh/chị/em nào đã từng triển khai Data Lake hoặc có kinh nghiệm xây dựng pipeline dữ liệu cho AI thì rất mong được trao đổi thêm.",
+      "created_at": "2026-07-31T07:14:00.310951+00:00",
+      "source_url": "/#channel/chia-se/post/post-chia-se-7",
+      "replies": []
+    },
+    {
       "id": "post-chia-se-6",
       "channel_id": "chia-se",
       "type": "post",

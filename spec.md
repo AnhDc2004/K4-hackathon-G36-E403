@@ -143,9 +143,9 @@ Loại: [ ] Tối ưu tính năng có sẵn  [XX] Tính năng mới
   - Code: [Lê Huy Hoàng]
   - Demo: [Phan Văn Phương]
 - Willing users (≥3 tên) + kế hoạch vòng validation CP5 (3 câu hỏi, ai log):
-  - Người thử 1: [điền tên học viên ngoài nhóm]
-  - Người thử 2: [điền tên học viên ngoài nhóm]
-  - Người thử 3: [điền tên học viên ngoài nhóm]
+  - Người thử 1: [Nguyễn Văn Quý]
+  - Người thử 2: [Trần Đặng Vương Quốc Long]
+  - Người thử 3: [Phạm Việt Bách]
   - Có thể bổ sung thêm 2 người dự phòng để đủ 5 log cho CP5
   - 3 câu hỏi:
     1. Điều gì khó hiểu hoặc khó chịu nhất?
