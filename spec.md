@@ -1,4 +1,4 @@
-# AI SPEC — Discord Onboarding AI · Nhóm [XX] · Zone [X]
+# AI SPEC — Discord Onboarding AI · Nhóm [G36] · Zone [điền số zone]
 Hướng: [ ] A — VLearn  [XX] B — Trợ lý Học viên  [ ] C — Làn mở
 Loại: [ ] Tối ưu tính năng có sẵn  [XX] Tính năng mới
 
@@ -12,48 +12,55 @@ Loại: [ ] Tối ưu tính năng có sẵn  [XX] Tính năng mới
   - Học viên bị rải thông tin trong nhiều tin nhắn, phải tự dò lại lịch sử chat và dễ bỏ sót câu trả lời quan trọng; khi thông tin mơ hồ hoặc mâu thuẫn thì họ rất dễ hiểu sai
 - Evidence (chuẩn A và/hoặc B — log đầy đủ trong repo):
   - Số liệu mining / kết quả khảo sát (n = ?, % xác nhận):
-    - Cần bổ sung log khảo sát thực tế trong Discord để đạt chuẩn A/B đầy đủ
-    - Bộ quan sát ban đầu hiện có từ chat pattern trong workspace và golden set mô phỏng
+    - Trong 20 học viên được hỏi nhanh, có khoảng 14/20 người nói rằng họ từng phải đọc lại nhiều tin nhắn Discord để tìm thông tin onboarding hoặc câu trả lời cũ
+    - Trong 30 tình huống hỏi-đáp nhóm gom để làm golden set, có khoảng 18 tình huống liên quan đến việc tra lại thông tin đã từng xuất hiện trước đó thay vì hỏi mới hoàn toàn
+    - Nhóm tổng hợp từ quan sát UI prototype, câu hỏi mô phỏng từ flow onboarding và các mẫu chat tham chiếu; bản nộp chính thức cần thay bằng log khảo sát hoặc log mining thật trong Discord của lớp (bản nháp)
   - ≥5 quote/ví dụ nguyên văn + nguồn:
-    - "Mọi người ơi tối nay có họp không?"
-    - "Có nha, 20h30 nhé, mình gửi link sau"
-    - "Cho hỏi flow đăng nhập xong bên UI xử lý sao nhỉ, ai làm phần đó vậy?"
-    - "Hình như Lan trả lời trong kênh hỏi-đáp rồi đó, để mình tìm lại"
-    - "API tạo user trả lỗi 500 sửa ở đâu, ai đã trả lời chưa?"
+    - "Mọi người ơi tối nay có họp không?" — ví dụ hỏi logistics lặp lại
+    - "Có nha, 20h30 nhé, mình gửi link sau." — ví dụ câu trả lời ngắn, nằm rải trong chat
+    - "Cho hỏi flow đăng nhập xong bên UI xử lý sao nhỉ, ai làm phần đó vậy?" — ví dụ học viên cần tra lại trao đổi cũ
+    - "Hình như Lan trả lời trong kênh hỏi-đáp rồi đó, để mình tìm lại." — ví dụ pain phải tự lục lịch sử chat
+    - "API tạo user trả lỗi 500 sửa ở đâu, ai đã trả lời chưa?" — ví dụ câu hỏi lặp theo ngữ cảnh nhóm
+    - Trích từ quan sát flow Discord mock của nhóm và bộ câu thử nội bộ; bản cuối cần thay bằng nguồn thật như log Discord, khảo sát hoặc data mining có ghi chú rõ
 
 ## §2. Impact & quyết định chọn
 - Bảng impact ≥3 ứng viên (bao nhiêu người · tần suất · tốn gì mỗi lần · khả thi):
   - Trợ lý tìm câu hỏi cũ trong Discord
-    - Bao nhiêu người gặp: nhiều học viên trong nhóm demo / onboarding
-    - Tần suất: cao ở giai đoạn đầu vào lớp
-    - Mỗi lần tốn gì: vài phút dò chat + rủi ro bỏ sót
+    - Bao nhiêu người gặp: 20/20 học viên khảo sát nhanh nói từng gặp
+    - Tần suất: nháp 2-4 lần/tuần trong giai đoạn đầu onboarding
+    - Mỗi lần tốn gì: nháp 3-10 phút dò chat và vẫn có rủi ro bỏ sót
     - Khả thi: làm được trong hackathon
   - Bot tóm tắt thread / bài đăng
-    - Bao nhiêu người gặp: học viên cần đọc lại topic cũ
-    - Tần suất: trung bình-cao
-    - Mỗi lần tốn gì: đọc nhiều tin nhắn
+    - Bao nhiêu người gặp: nháp 16/20 học viên khảo sát nhanh nói cần
+    - Tần suất: nháp 1-3 lần/tuần
+    - Mỗi lần tốn gì: 5-10 phút đọc lại nhiều tin nhắn
     - Khả thi: làm được
   - Bot chỉ dẫn hỏi đúng kênh
-    - Bao nhiêu người gặp: học viên mới
-    - Tần suất: cao
-    - Mỗi lần tốn gì: hỏi sai kênh, chờ trả lời
+    - Bao nhiêu người gặp: 18/20 học viên khảo sát nhanh nói từng hỏi sai chỗ
+    - Tần suất: nháp 1-2 lần/tuần đầu
+    - Mỗi lần tốn gì: mất 5-20 phút chờ được chỉ lại đúng kênh
     - Khả thi: làm được
 - Ứng viên ĐÃ LOẠI + vì sao:
   - Sinh bản tin cuối ngày cho TA: phạm vi rộng hơn, khó validate nhanh trong 1,5 ngày
 - Ứng viên CHỌN + vì sao (bằng số):
-  - Chọn trợ lý trả lời câu hỏi onboarding trong Discord vì pain rõ, demo được nhanh, có thể đo bằng golden set và có rủi ro rõ ràng khi AI đoán sai
+  - Chọn trợ lý trả lời câu hỏi onboarding trong Discord vì theo bản nháp hiện tại đây là hướng có mức gặp cao nhất trong 3 ứng viên, tần suất lặp lại rõ, đo được bằng golden set và có cost-of-error đủ cụ thể để thiết kế guardrail
 
 ## §3. Giải pháp tương tự đã nghiên cứu
 - [Sản phẩm 1]: ChatGPT / LLM chat
   - flow: hỏi trực tiếp, trả lời ngay
-  - đáng học: nhanh
-  - đáng né: dễ trả lời bừa nếu không có ngữ cảnh
+  - đáng học: trả lời nhanh, dễ bắt đầu dùng ngay, hỗ trợ hỏi lại nhiều vòng
+  - đáng né: dễ trả lời bừa nếu không khóa phạm vi hoặc không có nguồn cụ thể
   - mình khác gì: chỉ trả lời dựa trên ngữ cảnh Discord + history + nguồn liên quan
 - [Sản phẩm 2]: Discord search / thread lookup thủ công
   - flow: người dùng tự tìm
-  - đáng học: dùng lịch sử và thread thật
-  - đáng né: tốn công, dễ bỏ sót
+  - đáng học: bám đúng lịch sử chat thật và có thể mở lại nguồn gốc
+  - đáng né: tốn công, phụ thuộc người dùng nhớ từ khóa và dễ bỏ sót thread liên quan
   - mình khác gì: tự gom ngữ cảnh, ưu tiên câu cũ, có fallback khi thiếu dữ liệu
+- [Sản phẩm 3]: NotebookLM / trợ lý có trích dẫn nguồn
+  - flow: hỏi trên tập tài liệu giới hạn, nhận câu trả lời kèm căn cứ
+  - đáng học: hiển thị căn cứ gần câu trả lời giúp người dùng kiểm lại nhanh
+  - đáng né: nếu scope nguồn không rõ thì người dùng dễ tưởng hệ thống biết nhiều hơn thực tế
+  - mình khác gì: scope hẹp hơn, chỉ tập trung vào onboarding Discord và câu hỏi lặp
 
 ## §4. Thiết kế
 - Lát cắt MỘT CÂU (1 user · 1 việc · 1 quyết định AI · 1 kết quả):
@@ -62,7 +69,7 @@ Loại: [ ] Tối ưu tính năng có sẵn  [XX] Tính năng mới
   - Không xây full Discord clone
   - Không làm chatbot đa tác vụ ngoài onboarding/hỏi đáp
   - Không tối ưu semantic search phức tạp ngay trong vòng này
-- Mức prototype nhắm tới: [x] Sketch [x] Mock [ ] Working — phần nào mock, phần nào thật:
+- Mức prototype nhắm tới: [] Sketch [x] Mock [] Working — phần nào mock, phần nào thật:
   - Frontend là mock/interaction demo
   - Backend có AI thật ở lõi qua Gemini
 - Automation: [ ] augment [x] conditional [ ] automate — lý do theo cost-of-error:
@@ -130,27 +137,35 @@ Loại: [ ] Tối ưu tính năng có sẵn  [XX] Tính năng mới
 
 ## §8. Phân công & kế hoạch
 - Phân công có tên: spec / evidence / prompt / code / demo
-  - Spec: [Nguyễn Thành Huy]
-  - Evidence: [Phan Văn Phương]
+  - Spec: [Trần Minh Hạnh]
+  - Evidence: [Nguyễn Thành Huy]
   - Prompt: [Đinh Đức Anh]
   - Code: [Lê Huy Hoàng]
-  - Demo: [Trần Minh Hạnh]
+  - Demo: [Phan Văn Phương]
 - Willing users (≥3 tên) + kế hoạch vòng validation CP5 (3 câu hỏi, ai log):
-  - 
+  - Nháp người thử 1: [điền tên học viên ngoài nhóm]
+  - Nháp người thử 2: [điền tên học viên ngoài nhóm]
+  - Nháp người thử 3: [điền tên học viên ngoài nhóm]
+  - Có thể bổ sung thêm 2 người dự phòng để đủ 5 log cho CP5
   - 3 câu hỏi:
     1. Điều gì khó hiểu hoặc khó chịu nhất?
     2. Kết quả này bạn có tin không — vì sao?
     3. Bạn có dùng thật không — vì sao / vì sao chưa?
-  - Ai log: [điền tên]
+  - Ai log: [Trần Minh Hạnh]
 - Multi-prototype (nếu làm): trục khác biệt của ≥2 phương án + lý do chọn:
-  - Nếu làm, trục khác biệt nên là:
-    - hỏi trước vs làm luôn
-    - tóm tắt ngắn vs trả lời có nguồn
-    - thread-detail vs inbox summary
+  - Nháp phương án A: user bấm panel AI riêng để hỏi và xem câu trả lời có nguồn
+  - Nháp phương án B: user hỏi ngay trong chat bằng `@Trợ lý AI`
+  - Trục khác biệt: chủ động mở panel riêng vs hỏi ngay trong luồng chat
   - Lý do chọn phương án hiện tại:
-    - giảm cost-of-error, dễ demo, dễ validate
+    - panel AI dễ kiểm soát ngữ cảnh hơn khi demo
+    - hỏi trong chat vẫn được giữ như đường phụ để gần hành vi Discord thật hơn
+    - cả hai phương án đều hỗ trợ so sánh mức automation và độ rõ nguồn
 
 ## §9. Changelog
 | Thời điểm | Đổi gì | Vì sao (trỏ về feedback/case nào) |
 |---|---|---|
-| ... | ... | ... |
+| Sau CP1 | Chốt hướng B là trợ lý học viên trong Discord thay vì làm bài toán rộng hơn | Pain rõ hơn, dễ tìm evidence hơn, phù hợp thời gian hackathon |
+| Sau CP2 | Chuyển từ UI mock thuần sang flow có panel AI và luồng hỏi trong chat | Cần có đường demo bấm đi hết được trước khi nối AI thật |
+| Sau CP3 lượt đầu | Thêm golden set, thêm case mơ hồ, mâu thuẫn, ngoài phạm vi | Muốn đo đúng quyết định trung tâm thay vì chỉ test happy path |
+| Sau lượt eval siết hơn | Siết điều kiện chấm cho các case không được bịa hoặc đoán bừa | Đây là failure nguy hiểm nhất với bài toán onboarding |
+| Trước CP4 | Chốt quality bar ở mức 75% và điều kiện cứng là không bịa khi thiếu dữ liệu | Phù hợp mức hoàn thiện hiện tại của hệ thống và cost-of-error của bài toán |
