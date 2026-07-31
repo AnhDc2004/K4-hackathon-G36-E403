@@ -34,11 +34,29 @@ def build_prompt(name: str, variables: Dict[str, Any] | None = None) -> Dict[str
     prompt = load_prompt(name)
     variables = variables or {}
 
+    system = render_template(prompt.get("system", ""), variables)
+    task = render_template(prompt.get("task", ""), variables)
+    if name == "summarize":
+        system = system.replace(
+            "Chỉ tóm tắt thông tin liên quan đến chủ đề đã chọn.",
+            "Tóm tắt toàn bộ thông tin có trong cuộc hội thoại; chủ đề chỉ dùng để sắp xếp ngữ cảnh.",
+        )
+        task = task.replace("bản tóm tắt onboarding", "bản tóm tắt cuộc hội thoại")
+        task += (
+            "\n\nNếu có ít nhất một tin nhắn, hãy tạo tóm tắt từ dữ liệu đó. "
+            "Chỉ nói thiếu dữ liệu khi danh sách tin nhắn thực sự trống."
+        )
+    system = (
+        "Ngôn ngữ mặc định là tiếng Việt. Chỉ trả lời bằng ngôn ngữ khác khi "
+        "người dùng yêu cầu rõ ràng. Giữ nguyên tên riêng, mã lỗi và đường dẫn.\n\n"
+        + system
+    )
+
     return {
         "name": prompt.get("name", name),
         "description": prompt.get("description", ""),
-        "system": render_template(prompt.get("system", ""), variables),
-        "task": render_template(prompt.get("task", ""), variables),
+        "system": system,
+        "task": task,
         "output_format": prompt.get("output_format", {}),
     }
 

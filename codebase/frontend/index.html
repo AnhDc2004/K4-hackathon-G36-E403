@@ -240,20 +240,28 @@
     margin:14px 4px 8px;border-bottom:1px solid var(--border);padding-bottom:6px;
   }
 
-  .composer-wrap{padding:0 20px 16px;flex-shrink:0;}
+  .composer-wrap{padding:0 20px 18px;flex-shrink:0;position:relative;}
+  .command-menu{position:absolute;bottom:58px;left:0;width:300px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:8px;padding:6px;box-shadow:0 10px 24px rgba(0,0,0,.28);z-index:5;}
+  .command-menu.hidden{display:none;}
+  .command-option{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px;cursor:pointer;}
+  .command-option:hover,.command-option.selected{background:var(--accent-soft);}
+  .command-option .command-symbol{width:22px;text-align:center;color:var(--accent-hover);font-weight:700;}
+  .command-option small{display:block;color:var(--text-dim);font-size:11px;}
   .composer{
-    background:var(--bg-input);border-radius:10px;display:flex;align-items:center;gap:10px;
-    padding:10px 14px;
+    background:var(--bg-input);border:1px solid transparent;border-radius:12px;display:flex;align-items:flex-end;gap:10px;
+    padding:9px 12px 9px 14px;transition:border-color .15s,box-shadow .15s;
   }
-  .composer input{
+  .composer:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+  .composer input,.composer textarea{
     flex:1;background:none;border:none;color:var(--text);font-size:14.5px;font-family:inherit;
   }
-  .composer input::placeholder{color:var(--text-faint);}
+  .composer textarea{min-height:24px;max-height:160px;resize:none;overflow-y:hidden;line-height:1.45;padding:2px 0;}
+  .composer input::placeholder,.composer textarea::placeholder{color:var(--text-faint);}
   .composer .send{
-    background:none;border:none;color:var(--text-dim);cursor:pointer;display:flex;
+    width:34px;height:34px;flex:0 0 34px;background:var(--accent);border:none;border-radius:8px;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s,opacity .15s;
   }
-  .composer .send:hover{color:var(--accent-hover);}
-  .composer .send:disabled{opacity:.35;cursor:default;}
+  .composer .send:hover{background:var(--accent-hover);}
+  .composer .send:disabled{background:var(--border);color:var(--text-faint);opacity:.75;cursor:default;}
 
   /* ---------- AI panel ---------- */
   .ai-panel{
@@ -261,6 +269,7 @@
     display:flex;flex-direction:column;transition:width .22s ease,opacity .18s ease;overflow:hidden;
   }
   .ai-panel.closed{width:0;opacity:0;border-left:none;}
+  .ai-panel{display:none !important;}
   .ai-inner{width:380px;display:flex;flex-direction:column;height:100%;}
 
   .ai-head{
@@ -328,11 +337,27 @@
     font-size:12px;color:var(--text-dim);display:flex;gap:6px;align-items:flex-start;
   }
   .result-card .rsource b{color:var(--text);}
+  .login-backdrop{position:fixed;inset:0;background:rgba(10,11,16,.72);display:flex;align-items:center;justify-content:center;z-index:20;}
+  .login-backdrop.hidden{display:none;}
+  .login-card{width:min(380px,calc(100vw - 32px));background:var(--bg-elevated);border:1px solid var(--border);border-radius:12px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.35);}
+  .login-card h2{margin:0 0 6px;font-size:20px;color:#fff;}
+  .login-card p{margin:0 0 16px;color:var(--text-dim);font-size:13px;}
+  .login-card input{width:100%;background:var(--bg-input);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:11px 12px;font:inherit;}
+  .login-card button{margin-top:12px;width:100%;border:0;border-radius:8px;background:var(--accent);color:#fff;padding:10px;font-weight:700;cursor:pointer;}
 
   @media (prefers-reduced-motion: reduce){
     *{animation:none !important;transition:none !important;}
   }
 </style>
+
+<div class="login-backdrop" id="loginBackdrop">
+  <form class="login-card" id="loginForm">
+    <h2>Chào mừng bạn</h2>
+    <p>Nhập tên để tham gia workspace. Đây là đăng nhập giả lập cho prototype.</p>
+    <input id="loginName" maxlength="40" autocomplete="nickname" placeholder="Tên hiển thị" required>
+    <button type="submit">Vào workspace</button>
+  </form>
+</div>
 
 <div class="app">
   <!-- server rail -->
@@ -352,7 +377,7 @@
     <div class="user-panel">
       <div class="avatar lg" style="background:#7c6cf6">HH<span class="status-dot"></span></div>
       <div class="user-meta">
-        <div class="user-name">Hoàng</div>
+        <div class="user-name" id="currentUserName">Hoàng</div>
         <div class="user-sub">Đang hoạt động</div>
       </div>
       <button class="icon-btn" title="Cài đặt">⚙</button>
@@ -375,10 +400,15 @@
       </div>
       <div class="messages" id="messages"></div>
       <div class="composer-wrap">
+        <div class="command-menu hidden" id="commandMenu">
+          <div class="command-option" data-value="/summarize " data-prefix="/"><span class="command-symbol">/</span><div><strong>summarize</strong><small>Tóm tắt cuộc hội thoại hiện tại</small></div></div>
+          <div class="command-option" data-value="@Trợ lý AI " data-prefix="@"><span class="command-symbol">@</span><div><strong>Trợ lý AI</strong><small>Hỏi trợ lý trong channel hiện tại</small></div></div>
+          <div class="command-option" data-value="/history " data-prefix="/"><span class="command-symbol">?</span><div><strong>history</strong><small>Tìm câu hỏi đã được trả lời trước đó</small></div></div>
+        </div>
         <div class="composer">
           <button class="icon-btn" title="Đính kèm">📎</button>
           <button class="icon-btn" id="mentionBotBtn" title="Tag Trợ lý AI để hỏi ngay trong chat">🤖</button>
-          <input type="text" id="composerInput" placeholder="Nhắn vào #chat-chung (gõ @Trợ lý AI để hỏi ngay)">
+          <textarea id="composerInput" rows="1" placeholder="Nhắn vào #chat-chung (gõ /summarize để tóm tắt)"></textarea>
           <button class="send" id="composerSend" title="Gửi" disabled>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 11.5L21 3l-8.5 18-2.2-7.3L3 11.5z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
           </button>
@@ -426,6 +456,25 @@
 
 <script>
 (function(){
+  var currentUser = localStorage.getItem("k4.username") || "";
+  var loginBackdrop = document.getElementById("loginBackdrop");
+  var loginForm = document.getElementById("loginForm");
+  var loginName = document.getElementById("loginName");
+  function applyCurrentUser(){
+    var name = currentUser || "Hoàng";
+    document.getElementById("currentUserName").textContent = name;
+    document.querySelectorAll(".user-panel .avatar").forEach(function(node){ node.textContent = name.slice(0,2).toUpperCase(); });
+  }
+  if(currentUser){ loginBackdrop.classList.add("hidden"); }
+  loginForm.addEventListener("submit", function(event){
+    event.preventDefault();
+    currentUser = loginName.value.trim();
+    if(!currentUser) return;
+    localStorage.setItem("k4.username", currentUser);
+    loginBackdrop.classList.add("hidden");
+    applyCurrentUser();
+  });
+  applyCurrentUser();
   var AVATAR_COLORS = {
     "Hoàng":"#7c6cf6","Minh":"#4da3e0","Lan":"#3fc7b0","An":"#e8a23d",
     "Quản trị viên":"#f0a23d","Trợ lý AI":"#7c6cf6"
@@ -469,7 +518,7 @@
         {a:"Lan", t:"Hôm nay 14:03", m:"Có nha, 20h30 nhé, mình gửi link sau"},
         {a:"An", t:"Hôm nay 14:10", m:"Cho hỏi flow đăng nhập xong bên UI xử lý sao nhỉ, ai làm phần đó vậy?"},
         {a:"Minh", t:"Hôm nay 14:12", m:"Hình như Lan trả lời trong kênh hỏi-đáp rồi đó, để mình tìm lại"},
-        {a:"Hoàng", self:true, t:"Hôm nay 14:15", m:"ok mọi người, tối nay gặp nhau nhé"}
+        {a:"Hoàng", self:currentUser === "Hoàng", t:"Hôm nay 14:15", m:"ok mọi người, tối nay gặp nhau nhé"}
       ]
     },
     "gioi-thieu": {
@@ -529,13 +578,17 @@
           body:"Nhờ chia task rõ ràng từ ngày đầu nên checkpoint 1 mọi người không bị dồn việc cuối, nên duy trì cách này ở các mốc sau.",
           replies:[]}
       ]
+    },
+    "ai-tro-ly": {
+      name:"ai-trợ-lý", group:"ai", topic:"Chat riêng với Trợ lý AI", unread:0, messages:[]
     }
   };
 
   var CATEGORIES = [
     {id:"thongbao", label:"Thông báo", icon:"📢", channels:["thongbao-chung","lich-trinh"]},
     {id:"chatchung", label:"Chat chung", icon:"💬", channels:["chat-chung","gioi-thieu"]},
-    {id:"chude", label:"Chủ đề", icon:"🗂️", channels:["hoi-dap","chia-se","bai-hoc"]}
+    {id:"chude", label:"Chủ đề", icon:"🗂️", channels:["hoi-dap","chia-se","bai-hoc"]},
+    {id:"ai", label:"Trợ lý", icon:"🤖", channels:["ai-tro-ly"]}
   ];
 
   var activeChan = "chat-chung";
@@ -549,6 +602,20 @@
   function nowShort(){
     var d = new Date();
     return "Vừa xong · "+String(d.getHours()).padStart(2,"0")+":"+String(d.getMinutes()).padStart(2,"0");
+  }
+
+  function formatMessageTime(value){
+    if(!value) return "Nguồn dữ liệu";
+    var date = new Date(value);
+    if(Number.isNaN(date.getTime())) return value;
+    var now = new Date();
+    var sameDay = date.toDateString() === now.toDateString();
+    var yesterday = new Date(now);
+    yesterday.setDate(now.getDate() - 1);
+    var clock = String(date.getHours()).padStart(2,"0")+":"+String(date.getMinutes()).padStart(2,"0");
+    if(sameDay) return "Hôm nay · "+clock;
+    if(date.toDateString() === yesterday.toDateString()) return "Hôm qua · "+clock;
+    return String(date.getDate()).padStart(2,"0")+"/"+String(date.getMonth()+1).padStart(2,"0")+" · "+clock;
   }
 
   var TAG_STYLE = {
@@ -605,6 +672,18 @@
     render();
   }
 
+  function openHashLocation(){
+    var parts = location.hash.replace(/^#/, "").split("/");
+    if(parts[0] !== "channel" || !CHANNELS[decodeURIComponent(parts[1] || "")]) return;
+    var channelId = decodeURIComponent(parts[1]);
+    selectChannel(channelId);
+    if(parts[2] === "post" && parts[3]){
+      activePost = decodeURIComponent(parts[3]);
+      render();
+    }
+  }
+  window.addEventListener("hashchange", openHashLocation);
+
   /* ---------------- header ---------------- */
   function updateHeader(){
     var c = CHANNELS[activeChan];
@@ -641,8 +720,9 @@
     return escapedText.replace(MENTION_RE, '<span class="mention">$&</span>');
   }
 
-  function renderMsgHtml(msg){
-    var h = '<div class="msg'+(msg.self?" self":"")+'">';
+  function renderMsgHtml(msg, channelId, messageIndex){
+    var messageId = channelId ? ' id="message-'+escapeHtml(channelId)+'-'+messageIndex+'"' : '';
+    var h = '<div class="msg'+(msg.self?" self":"")+'"'+messageId+'>';
     h += avatarHtml(msg.a);
     h += '<div class="body"><div class="line1"><span class="author">'+msg.a+(msg.self?" (Bạn)":"")+'</span>';
     if(msg.role){ h += '<span class="role-tag'+(msg.a==="Trợ lý AI"?" bot":"")+'">'+msg.role+'</span>'; }
@@ -651,6 +731,7 @@
       h += '<div class="text"><span class="typing-dots"><span></span><span></span><span></span></span></div>';
     } else {
       h += '<div class="text">'+highlightMentions(escapeHtml(msg.m))+'</div>';
+      if(msg.source){ h += '<div class="rsource">↳ Nguồn: <a href="#'+escapeHtml(msg.source.anchor)+'" data-source-channel="'+escapeHtml(msg.source.channel)+'" data-source-post="'+escapeHtml(msg.source.post || '')+'">'+escapeHtml(msg.source.label)+'</a></div>'; }
     }
     h += '</div></div>';
     return h;
@@ -658,7 +739,7 @@
 
   function renderChatBody(id){
     var html = "";
-    CHANNELS[id].messages.forEach(function(msg){ html += renderMsgHtml(msg); });
+    CHANNELS[id].messages.forEach(function(msg, index){ html += renderMsgHtml(msg, id, index); });
     var box = document.getElementById("messages");
     box.innerHTML = html;
     box.scrollTop = box.scrollHeight;
@@ -666,7 +747,7 @@
 
   function postCardHtml(p){
     var lastTime = p.replies.length ? p.replies[p.replies.length-1].t : p.t;
-    return '<button class="post-card" data-post="'+p.id+'">'
+    return '<button class="post-card" id="post-'+p.id+'" data-post="'+p.id+'">'
       + '<span class="post-tag tag-'+tagClass(p.tag)+'">'+p.tag+'</span>'
       + '<div class="post-main">'
         + '<div class="post-title">'+escapeHtml(p.title)+'</div>'
@@ -712,6 +793,14 @@
   }
 
   document.getElementById("messages").addEventListener("click", function(e){
+    var source = e.target.closest("[data-source-channel]");
+    if(source){
+      e.preventDefault();
+      selectChannel(source.getAttribute("data-source-channel"));
+      var sourcePost = source.getAttribute("data-source-post");
+      if(sourcePost){ activePost = sourcePost; render(); }
+      return;
+    }
     if(getMode()==="forum-list"){
       var postBtn = e.target.closest("[data-post]");
       if(postBtn){ activePost = postBtn.getAttribute("data-post"); showNewPostForm=false; render(); return; }
@@ -724,7 +813,7 @@
     }
   });
 
-  function submitNewPost(){
+  async function submitNewPost(){
     var titleEl = document.getElementById("newPostTitle");
     var bodyEl = document.getElementById("newPostBody");
     var title = titleEl.value.trim();
@@ -733,11 +822,23 @@
       (title ? bodyEl : titleEl).focus();
       return;
     }
-    CHANNELS[activeChan].posts.unshift({
-      id:"p"+Date.now(), title:title, tag:"Đang mở", a:"Hoàng", t:nowShort(), body:body, replies:[]
-    });
-    showNewPostForm = false;
-    render();
+    try{
+      var response = await fetch(API_BASE + "/api/posts", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({channel_id:activeChan, title:title, content:body, author:currentUser || "Hoàng"})});
+      if(!response.ok) throw new Error("HTTP " + response.status);
+      var payload = await response.json();
+      addWorkspacePost(payload.post);
+      showNewPostForm = false;
+      render();
+    }catch(error){ alert("Không lưu được bài đăng: " + error.message); }
+  }
+
+  function addWorkspacePost(item){
+    var channel = CHANNELS[item.channel_id];
+    if(!channel) return;
+    channel.posts = channel.posts || [];
+    var id = item.id.split("-").pop();
+    if(channel.posts.some(function(post){ return post.id === id; })) return;
+    channel.posts.unshift({id:id, title:item.title, tag:"Đang mở", a:item.author, t:formatMessageTime(item.created_at), body:item.content, replies:[]});
   }
 
   /* ---------------- top-level render ---------------- */
@@ -756,12 +857,41 @@
   var composerInput = document.getElementById("composerInput");
   var composerSend = document.getElementById("composerSend");
   var composerWrap = document.querySelector(".composer-wrap");
+  var commandMenu = document.getElementById("commandMenu");
+  var historyMode = false;
+  function updateCommandMenu(){
+    var value = composerInput.value.trim();
+    var open = value === "/" || value === "@";
+    commandMenu.classList.toggle("hidden", !open);
+  }
+
+  function channelHref(channelId, postId, messageIndex){
+    var href = "#channel/" + encodeURIComponent(channelId);
+    if(postId) href += "/post/" + encodeURIComponent(postId);
+    if(messageIndex !== undefined) href += "/message/" + messageIndex;
+    return href;
+  }
   function updateSendState(){ composerSend.disabled = composerInput.value.trim()===""; }
-  composerInput.addEventListener("input", updateSendState);
+  function resizeComposer(){
+    composerInput.style.height = "auto";
+    composerInput.style.height = Math.min(composerInput.scrollHeight, 160) + "px";
+    composerInput.style.overflowY = composerInput.scrollHeight > 160 ? "auto" : "hidden";
+  }
+  composerInput.addEventListener("input", function(){ updateSendState(); updateCommandMenu(); resizeComposer(); });
+
+  commandMenu.addEventListener("click", function(event){
+    var option = event.target.closest(".command-option");
+    if(!option) return;
+    composerInput.value = option.dataset.value;
+    commandMenu.classList.add("hidden");
+    updateSendState();
+    composerInput.focus();
+  });
 
   function updateComposer(){
     var mode = getMode();
-    if(mode==="forum-list"){
+    var readOnly = CHANNELS[activeChan].group === "thongbao" || mode === "forum-list";
+    if(readOnly){
       composerWrap.style.display = "none";
     } else {
       composerWrap.style.display = "";
@@ -769,12 +899,15 @@
         ? "Trả lời bài đăng này... (gõ @Trợ lý AI để hỏi ngay)"
         : "Nhắn vào #"+CHANNELS[activeChan].name+" (gõ @Trợ lý AI để hỏi ngay)";
     }
+    var aiButton = document.getElementById("aiToggleBtn");
+    if(aiButton) aiButton.style.display = CHANNELS[activeChan].group === "thongbao" ? "none" : "";
   }
 
   function postOwnMessage(){
     var val = composerInput.value.trim();
     if(!val) return;
     var mode = getMode();
+    if(CHANNELS[activeChan].group === "thongbao") return;
     var targetList;
     if(mode==="post-detail"){
       targetList = getPost(activeChan, activePost).replies;
@@ -783,15 +916,40 @@
     } else {
       return;
     }
-    targetList.push({a:"Hoàng", self:true, t:nowShort(), m:val});
+    targetList.push({a:currentUser || "Hoàng", self:true, t:nowShort(), m:val});
+    saveChatMessage("user", val);
     composerInput.value = "";
+    resizeComposer();
     updateSendState();
     render();
-    if(MENTION_RE.test(val)){ respondAsBot(targetList, val); }
+    if(/^\/summarize(?:\s|$)/i.test(val)){
+      var period = val.replace(/^\/summarize\s*/i, "").trim().toLowerCase();
+      var periods = {"1h":"1 giờ qua","3h":"3 giờ qua","6h":"6 giờ qua","12h":"12 giờ qua","1d":"1 ngày qua","3d":"3 ngày qua"};
+      var summaryQuestion = "Tóm tắt cuộc hội thoại hiện tại";
+      if(period && periods[period]) summaryQuestion += " trong " + periods[period];
+      respondAsBot(targetList, summaryQuestion);
+    } else if(/^\/history\s*$/i.test(val)){
+      historyMode = true;
+      var historyNotice = "Đã bật tìm kiếm lịch sử. Hãy gửi câu hỏi cần kiểm tra.";
+      targetList.push({a:"Trợ lý AI", role:"BOT", t:nowShort(), m:historyNotice});
+      saveChatMessage("assistant", historyNotice);
+      render();
+    } else if(historyMode){
+      historyMode = false;
+      respondAsBot(targetList, val, "history");
+    } else if(MENTION_RE.test(val)){ respondAsBot(targetList, val); }
   }
   composerSend.addEventListener("click", postOwnMessage);
   composerInput.addEventListener("keydown", function(e){
-    if(e.key==="Enter"){ e.preventDefault(); postOwnMessage(); }
+    if((e.key === "Tab" || e.key === "Enter") && !commandMenu.classList.contains("hidden") && (composerInput.value === "/" || composerInput.value === "@")){
+      e.preventDefault();
+      composerInput.value = composerInput.value === "/" ? "/summarize " : "@Trợ lý AI ";
+      commandMenu.classList.add("hidden");
+      updateSendState();
+      return;
+    }
+    if(e.key === "Escape"){ commandMenu.classList.add("hidden"); return; }
+    if(e.key==="Enter" && !e.shiftKey){ e.preventDefault(); postOwnMessage(); }
   });
 
   document.getElementById("mentionBotBtn").addEventListener("click", function(){
@@ -805,27 +963,63 @@
     composerInput.setSelectionRange(composerInput.value.length, composerInput.value.length);
   });
 
-  function respondAsBot(targetList, question){
+  function respondAsBot(targetList, question, intent){
     var placeholder = {a:"Trợ lý AI", role:"BOT", t:nowShort(), typing:true};
     targetList.push(placeholder);
     render();
-    callAssistantBackend(question, getVisibleContextText()).then(function(payload){
+    if(/^(?:@?\s*trợ lý ai\s*)?(hi|hello|hey|xin chào|chào|alo)\s*[!.?]*$/i.test(question.trim())){
+      var greeting = "Chào "+(currentUser || "bạn")+"! Mình là Trợ lý AI. Bạn muốn mình trả lời câu hỏi, tìm thông tin trong các kênh, hay tóm tắt cuộc hội thoại?";
+      var greetingIndex = targetList.indexOf(placeholder);
+      targetList[greetingIndex] = {a:"Trợ lý AI", role:"BOT", t:nowShort(), m:greeting};
+      saveChatMessage("assistant", greeting);
+      render();
+      return;
+    }
+    callAssistantBackend(question, getWorkspaceContextText(), intent).then(function(payload){
       var idx = targetList.indexOf(placeholder);
       if(idx===-1) return;
       var text = payload.answer || "Chưa có câu trả lời.";
       if(payload.matched_question){
         text += "\n↳ Khớp câu hỏi cũ: " + payload.matched_question;
       }
-      targetList[idx] = {a:"Trợ lý AI", role:"BOT", t:nowShort(), m:text};
+      var groundedSource = Object.prototype.hasOwnProperty.call(payload, "sources")
+        ? sourceFromPayload(payload)
+        : findSource(question);
+      targetList[idx] = {a:"Trợ lý AI", role:"BOT", t:nowShort(), m:text, source: groundedSource};
+      saveChatMessage("assistant", text);
       render();
     }).catch(function(){
       var idx = targetList.indexOf(placeholder);
       if(idx===-1) return;
-      var ans = buildAnswer(question, getVisibleContextText());
-      var text = ans.body + (ans.source ? "\n↳ "+ans.source.replace(/<\/?b>/g,"") : "");
-      targetList[idx] = {a:"Trợ lý AI", role:"BOT", t:nowShort(), m:text};
+      var text = "Mình đang tạm không kết nối được với AI. Bạn có thể thử lại sau ít phút hoặc gửi lại câu hỏi; lịch sử chat của bạn vẫn được lưu.";
+      targetList[idx] = {a:"Trợ lý AI", role:"BOT", t:nowShort(), m:text, source: null};
+      saveChatMessage("assistant", text);
       render();
     });
+  }
+
+  function findSource(question){
+    var q = question.toLowerCase();
+    if(q.indexOf("format") >= 0 || q.indexOf("schema") >= 0 || q.indexOf("fe") >= 0 || q.indexOf("be") >= 0 || q.indexOf("thống nhất") >= 0){
+      return {anchor:"channel/bai-hoc/post/p7", channel:"bai-hoc", post:"p7", label:"#bài-học · Chưa thống nhất format API từ đầu"};
+    }
+    if(q.indexOf("api") >= 0 || q.indexOf("500") >= 0){
+      return {anchor:"channel/hoi-dap/post/p1", channel:"hoi-dap", post:"p1", label:"#hỏi-đáp · API tạo user trả lỗi 500"};
+    }
+    if(q.indexOf("lịch") >= 0 || q.indexOf("thông báo") >= 0){
+      return {anchor:"channel/thongbao-chung", channel:"thongbao-chung", label:"#thông-báo-chung"};
+    }
+    return null;
+  }
+
+  function sourceFromPayload(payload){
+    var answer = (payload.answer || "").toLowerCase();
+    if(answer.indexOf("không có thông tin") >= 0 || answer.indexOf("chưa có thông tin") >= 0 || answer.indexOf("không đủ thông tin") >= 0 || answer.indexOf("không có dữ liệu") >= 0 || answer.indexOf("chưa có dữ liệu") >= 0 || answer.indexOf("không tìm thấy") >= 0) return null;
+    var item = payload.sources && payload.sources[0];
+    if(!item || !item.source_url) return null;
+    var postId = item.type === "post" ? item.id.split("-").pop() : "";
+    var channelName = CHANNELS[item.channel_id] ? CHANNELS[item.channel_id].name : item.channel_id;
+    return {anchor: item.source_url.replace(/^.*#/, ""), channel: item.channel_id, post: postId, label: "#" + channelName + " · " + (item.title || item.content || item.id)};
   }
 
   /* ---- AI panel ---- */
@@ -864,6 +1058,84 @@
 
   var API_BASE = window.location.origin;
 
+  async function hydrateChatHistory(){
+    try{
+      var response = await fetch(API_BASE + "/api/messages");
+      if(!response.ok) return;
+      var payload = await response.json();
+      (payload.messages || []).forEach(function(item){
+        var channel = CHANNELS[item.channel];
+        if(!channel || !Array.isArray(channel.messages)) return;
+        var author = item.username || (item.role === "assistant" ? "Trợ lý AI" : "Hoàng");
+        var exists = channel.messages.some(function(message){ return message.a === author && message.m === item.content; });
+        if(!exists) channel.messages.push({a: author, role: item.role === "assistant" ? "BOT" : undefined, self: author === currentUser, t: formatMessageTime(item.created_at), m: item.content});
+      });
+      render();
+    }catch(error){ console.warn("Không tải được lịch sử chat:", error); }
+  }
+
+  function connectRealtimeChat(){
+    var protocol = location.protocol === "https:" ? "wss:" : "ws:";
+    var socket = new WebSocket(protocol + "//" + location.host + "/ws/chat");
+    socket.onmessage = function(event){
+      var item = JSON.parse(event.data || "{}");
+      if(item.event === "post_created"){
+        addWorkspacePost(item.post);
+        render();
+        return;
+      }
+      var channel = CHANNELS[item.channel];
+      if(!channel) return;
+      channel.messages = channel.messages || [];
+      var author = item.username || (item.role === "assistant" ? "Trợ lý AI" : "Người dùng");
+      var exists = channel.messages.some(function(message){ return message.m === item.content && message.a === author; });
+      if(exists) return;
+      channel.messages.push({a:author, role:item.role === "assistant" ? "BOT" : undefined, self:author === currentUser, t:formatMessageTime(item.created_at), m:item.content});
+      render();
+    };
+    socket.onclose = function(){ setTimeout(connectRealtimeChat, 2000); };
+  }
+
+  async function hydrateWorkspace(){
+    try{
+      var response = await fetch(API_BASE + "/api/workspace");
+      if(!response.ok) return;
+      var data = await response.json();
+      Object.keys(CHANNELS).forEach(function(id){
+        if(CHANNELS[id].messages) CHANNELS[id].messages = [];
+        if(CHANNELS[id].posts) CHANNELS[id].posts = [];
+      });
+      (data.items || []).forEach(function(item){
+        var channel = CHANNELS[item.channel_id];
+        if(!channel) return;
+        if(item.type === "post"){
+          channel.posts = channel.posts || [];
+          if(channel.posts.some(function(post){ return post.id === item.id.split("-").pop(); })) return;
+          channel.posts.push({id:item.id.split("-").pop(), title:item.title, tag:"Nguồn", a:item.author, t:"Nguồn JSON", body:item.content, replies:(item.replies || []).map(function(reply){ return {a:reply.author, t:"Nguồn JSON", m:reply.content}; })});
+        } else {
+          channel.messages = channel.messages || [];
+          if(!channel.messages.some(function(message){ return message.m === item.content && message.a === item.author; })) channel.messages.push({a:item.author, t:formatMessageTime(item.created_at), m:item.content});
+        }
+      });
+      render();
+    }catch(error){ console.warn("Không tải được workspace:", error); }
+  }
+
+  function saveChatMessage(role, content){
+    return fetch(API_BASE + "/api/messages", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        role: role,
+        username: role === "assistant" ? "Trợ lý AI" : (currentUser || "Hoàng"),
+        content: content,
+        channel: activeChan
+      })
+    }).then(function(response){
+      if(!response.ok) throw new Error("HTTP " + response.status);
+      return response.json();
+    }).catch(function(err){ console.warn("Không lưu được chat:", err); });
+  }
   function getVisibleContextText(){
     var mode = getMode();
     if(mode === "post-detail"){
@@ -889,6 +1161,20 @@
     }).join("\n");
   }
 
+  function getWorkspaceContextText(){
+    var sections = [];
+    Object.keys(CHANNELS).forEach(function(id){
+      var channel = CHANNELS[id];
+      if(channel.messages && channel.messages.length){
+        sections.push("Kênh #" + channel.name + ":\n" + channel.messages.map(function(m){ return m.a + ": " + m.m; }).join("\n"));
+      }
+      if(channel.posts && channel.posts.length){
+        sections.push("Kênh #" + channel.name + ":\n" + channel.posts.map(function(p){ return p.title + ": " + p.body; }).join("\n"));
+      }
+    });
+    return sections.join("\n\n");
+  }
+
   function renderAssistantResult(payload){
     var html = '<div class="result-card">';
     html += '<div class="rhead"><span class="rmode">' + escapeHtml(payload.mode || "Kết quả") + '</span><span class="rtime">' + nowLabel() + '</span></div>';
@@ -902,9 +1188,10 @@
     resultArea.innerHTML = html;
   }
 
-  async function callAssistantBackend(question, doc){
+  async function callAssistantBackend(question, doc, intent){
     var body = {
       question: question,
+      intent: intent || (/^tóm tắt/i.test(question) ? "summarize" : undefined),
       topic: CHANNELS[activeChan].topic || "general",
       messages: doc || getVisibleContextText(),
       threshold: 0.4,
@@ -923,7 +1210,9 @@
       throw new Error("Backend trả lỗi " + resp.status);
     }
 
-    return await resp.json();
+    var payload = await resp.json();
+    payload.question = question;
+    return payload;
   }
 
   function buildAnswer(question, doc){
@@ -999,5 +1288,10 @@
   });
 
   render();
+  openHashLocation();
+  hydrateWorkspace();
+  hydrateChatHistory();
+  connectRealtimeChat();
+  resizeComposer();
 })();
 </script>

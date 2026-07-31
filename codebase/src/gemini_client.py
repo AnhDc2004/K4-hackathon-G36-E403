@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 load_dotenv()
-DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
+DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
 
 def _build_contents(question: str, messages: str, prompt: Dict[str, Any]) -> List[Dict[str, Any]]:
@@ -59,7 +59,9 @@ def gemini_generate(
 
     with httpx.Client(timeout=timeout) as client:
         response = client.post(url, json=payload, headers=headers)
-        response.raise_for_status()
+        if response.is_error:
+            detail = response.text[:300].replace("\n", " ")
+            raise RuntimeError(f"Gemini API error {response.status_code}: {detail}")
         data = response.json()
 
     candidates = data.get("candidates", [])

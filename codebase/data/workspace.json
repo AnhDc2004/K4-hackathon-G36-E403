@@ -1,0 +1,177 @@
+{
+  "channels": [
+    {
+      "id": "thongbao-chung",
+      "name": "thông-báo-chung",
+      "kind": "announcement"
+    },
+    {
+      "id": "lich-trinh",
+      "name": "lịch-trình-hackathon",
+      "kind": "announcement"
+    },
+    {
+      "id": "hoi-dap",
+      "name": "hỏi-đáp",
+      "kind": "qa"
+    },
+    {
+      "id": "chia-se",
+      "name": "chia-sẻ",
+      "kind": "sharing"
+    },
+    {
+      "id": "bai-hoc",
+      "name": "bài-học",
+      "kind": "lesson"
+    },
+    {
+      "id": "chat-chung",
+      "name": "chat-chung",
+      "kind": "chat"
+    }
+  ],
+  "items": [
+    {
+      "id": "post-chia-se-6",
+      "channel_id": "chia-se",
+      "type": "post",
+      "title": "Chia sẻ lộ trình Từ ý tưởng đến sản phẩm AI thực tế ( tài liệu tham khảo)",
+      "author": "hoàng",
+      "content": "Đây là bộ tài liệu mình xây dựng trong quá trình làm AI Trainer và triển khai các sản phẩm AI cho doanh nghiệp. Nội dung tập trung vào cách ứng dụng Vibe Coding để xây dựng một sản phẩm AI từ đầu đến cuối.\n\nTrong tài liệu, mình chia sẻ toàn bộ quy trình:\nTìm và đánh giá ý tưởng -> Tư duy sản phẩm & thiết kế giải pháp > Nghiên cứu và xác thực nhu cầu người dùng -> Xây dựng MVP và hoàn thiện sản phẩm AI > Kỹ năng làm việc với AI để debug và xử lý lỗi trong quá trình phát triển.\n\nĐây là phiên bản phát hành từ tháng 04/2026. Hiện mình chưa cập nhật lên phiên bản mới nhất nên một số nội dung và công cụ có thể đã thay đổi. Tuy nhiên, tư duy, phương pháp và quy trình trong tài liệu vẫn là những gì mình đang áp dụng khi phát triển sản phẩm AI đến thời điểm hiện tại.\n\nHy vọng tài liệu sẽ hữu ích, đặc biệt với những bạn mới bắt đầu xây dựng sản phẩm AI hoặc đang dùng Vibe Coding để build\n\nTrước đây mình đã chia sẻ tài liệu này trên một số cộng đồng và cũng có hơn 500.000 reached. Và mình chia sẻ miễn phí toàn bộ tài liệu và mã nguồn, các bạn có thể tham khảo, học tập và sử dụng theo nhu cầu của mình.\n\nChúc mọi người xây dựng được những sản phẩm AI thật sự hữu ích!",
+      "created_at": "2026-07-31T05:50:03.290465+00:00",
+      "source_url": "/#channel/chia-se/post/post-chia-se-6",
+      "replies": []
+    },
+    {
+      "id": "post-hoi-dap-5",
+      "channel_id": "hoi-dap",
+      "type": "post",
+      "title": "Thắc mắc về requirement của project",
+      "author": "hoàng",
+      "content": "Dạ, nhóm em còn 1 số vấn đề chưa rõ về yêu cầu của project thì tụi em có thể hỏi ai để có thể xin lời giải thích rõ ràng hơn ạ ? Tụi em đang chọn project RAV-14. Tụi em có thể xin contact stackholders để in giải thích kĩ hơn về requirement không ạ ?",
+      "created_at": "2026-07-31T05:48:54.326424+00:00",
+      "source_url": "/#channel/hoi-dap/post/post-hoi-dap-5",
+      "replies": []
+    },
+    {
+      "id": "post-hoi-dap-4",
+      "channel_id": "hoi-dap",
+      "type": "post",
+      "title": "Thắc mắc về data",
+      "author": "Trần Hoàng",
+      "content": "Sau khi chốt đề thì data mình tự kiếm hả ae?",
+      "created_at": "2026-07-31T05:28:11.376301+00:00",
+      "source_url": "/#channel/hoi-dap/post/post-hoi-dap-4",
+      "replies": []
+    },
+    {
+      "id": "msg-thongbao-001",
+      "channel_id": "thongbao-chung",
+      "type": "message",
+      "author": "Quản trị viên",
+      "content": "Check-point tiếp theo: Thứ Sáu 02/08, 19:00. Chuẩn bị demo và slide.",
+      "source_url": "/#channel/thongbao-chung/message/msg-thongbao-001"
+    },
+    {
+      "id": "msg-lich-001",
+      "channel_id": "lich-trinh",
+      "type": "message",
+      "author": "Quản trị viên",
+      "content": "Mốc 2 — Prototype giao diện: đang làm hôm nay.",
+      "source_url": "/#channel/lich-trinh/message/msg-lich-001"
+    },
+    {
+      "id": "post-hoidap-p1",
+      "channel_id": "hoi-dap",
+      "type": "post",
+      "title": "API tạo user trả lỗi 500",
+      "author": "Minh",
+      "content": "Có ai biết API trả lỗi 500 khi tạo tài khoản mới không?",
+      "source_url": "/#channel/hoi-dap/post/post-hoidap-p1",
+      "replies": [
+        {
+          "author": "Lan",
+          "content": "Bug do thiếu validate email trùng, đã fix ở PR #42."
+        }
+      ]
+    },
+    {
+      "id": "post-baihoc-p7",
+      "channel_id": "bai-hoc",
+      "type": "post",
+      "title": "Chưa thống nhất format API từ đầu",
+      "author": "Minh",
+      "content": "FE và BE mất thời gian vì hiểu format lỗi khác nhau. Lần sau nên chốt schema trước khi code.",
+      "source_url": "/#channel/bai-hoc/post/post-baihoc-p7",
+      "replies": [
+        {
+          "author": "Lan",
+          "content": "Nên ghi format vào doc chuẩn trước khi bắt đầu sprint."
+        }
+      ]
+    },
+    {
+      "id": "post-chiase-p5",
+      "channel_id": "chia-se",
+      "type": "post",
+      "title": "Mẹo viết prompt để AI tóm tắt gọn hơn",
+      "author": "Minh",
+      "content": "Ghi rõ tóm tắt theo gạch đầu dòng, tối đa 3 ý để kết quả gọn hơn.",
+      "source_url": "/#channel/chia-se/post/post-chiase-p5",
+      "replies": []
+    },
+    {
+      "id": "msg-chat-001",
+      "channel_id": "chat-chung",
+      "type": "message",
+      "author": "Minh",
+      "content": "Mọi người ơi tối nay có họp không?",
+      "source_url": "/#channel/chat-chung/message/msg-chat-001"
+    },
+    {
+      "id": "msg-chat-002",
+      "channel_id": "chat-chung",
+      "type": "message",
+      "author": "Lan",
+      "content": "Có nha, 20h30 nhé, mình gửi link sau.",
+      "source_url": "/#channel/chat-chung/message/msg-chat-002"
+    },
+    {
+      "id": "msg-today-001",
+      "channel_id": "thongbao-chung",
+      "type": "message",
+      "author": "Quản trị viên",
+      "content": "Hôm nay 18:30 đóng form đăng ký demo. Vui lòng kiểm tra tên nhóm và link prototype trước khi gửi.",
+      "created_at": "2026-07-31T08:00:00+07:00",
+      "source_url": "/#channel/thongbao-chung/message/msg-today-001"
+    },
+    {
+      "id": "msg-today-002",
+      "channel_id": "lich-trinh",
+      "type": "message",
+      "author": "Quản trị viên",
+      "content": "Hôm nay 19:00 — dry run demo trong 5 phút; mỗi thành viên chuẩn bị một phần trình bày.",
+      "created_at": "2026-07-31T08:15:00+07:00",
+      "source_url": "/#channel/lich-trinh/message/msg-today-002"
+    },
+    {
+      "id": "msg-today-003",
+      "channel_id": "lich-trinh",
+      "type": "message",
+      "author": "Minh",
+      "content": "Hôm nay 20:30 — họp nhóm rà lại golden set và case lỗi trước khi chốt bản demo.",
+      "created_at": "2026-07-31T08:30:00+07:00",
+      "source_url": "/#channel/lich-trinh/message/msg-today-003"
+    },
+    {
+      "id": "msg-today-004",
+      "channel_id": "thongbao-chung",
+      "type": "message",
+      "author": "Quản trị viên",
+      "content": "Nhắc lại: không commit API key hoặc dữ liệu học viên vào repository nộp bài.",
+      "created_at": "2026-07-31T09:00:00+07:00",
+      "source_url": "/#channel/thongbao-chung/message/msg-today-004"
+    }
+  ]
+}

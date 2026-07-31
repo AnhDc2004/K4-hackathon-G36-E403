@@ -2,6 +2,7 @@ from typing import Any, Callable, Dict, Optional
 
 from history_store import append_question_answer, find_similar_question
 from prompt_loader import build_prompt
+from text_utils import normalize_text
 
 
 GenerateFn = Callable[[Dict[str, Any]], Dict[str, Any]]
@@ -9,17 +10,22 @@ GenerateFn = Callable[[Dict[str, Any]], Dict[str, Any]]
 
 def classify_question(question: str) -> str:
     text = (question or "").lower()
+    normalized = normalize_text(text)
 
-    if "tóm tắt" in text or "summary" in text or "ngắn gọn" in text:
+    if "tóm tắt" in text or "tom tat" in normalized or "summar" in normalized or "ngan gon" in normalized:
         return "summarize"
-    if "đã hỏi" in text or "câu này" in text or "trước đó" in text:
+    if "đã hỏi" in text or "cau nay" in normalized or "truoc do" in normalized:
         return "history"
     return "answer"
 
 
 def build_agent_context(question: str, options: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     options = options or {}
-    intent = options.get("intent") or classify_question(question)
+    requested_intent = options.get("intent")
+    detected_intent = classify_question(question)
+    # A natural-language summary request must remain a summary even when an
+    # older frontend sends the generic answer intent.
+    intent = "summarize" if detected_intent == "summarize" else (requested_intent or detected_intent)
     topic = options.get("topic", "general")
     threshold = float(options.get("threshold", 0.4))
     match = find_similar_question(question, threshold=threshold)
@@ -65,14 +71,13 @@ def agent_respond(
     context = build_agent_context(question, options)
     prompt = build_agent_prompt(question, context, options)
 
-    if context["match"]:
+    if context["match"] and context["intent"] == "history":
         return {
             "mode": "history",
             "intent": context["intent"],
             "confidence": context["match"]["score"],
             "matched_question": context["match"]["record"]["question"],
             "answer": context["match"]["record"]["answer"],
-            "prompt": prompt,
             "record": context["match"]["record"],
         }
 
@@ -84,7 +89,6 @@ def agent_respond(
             "confidence": 0,
             "matched_question": None,
             "answer": None,
-            "prompt": prompt,
             "record": None,
         }
 
@@ -103,6 +107,7 @@ def agent_respond(
             "question": question,
             "answer": generated.get("answer", ""),
             "topic": generated.get("topic", context["topic"]),
+            "intent": context["intent"],
             "source": generated.get("source", "agent"),
         }
     )
@@ -113,7 +118,6 @@ def agent_respond(
         "confidence": generated.get("confidence", 0),
         "matched_question": None,
         "answer": generated.get("answer", ""),
-        "prompt": prompt,
         "record": record,
     }
 
