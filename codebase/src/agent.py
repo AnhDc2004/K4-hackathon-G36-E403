@@ -14,6 +14,10 @@ def classify_question(question: str) -> str:
 
     if "tóm tắt" in text or "tom tat" in normalized or "summar" in normalized or "ngan gon" in normalized:
         return "summarize"
+    if any(term in normalized for term in ("lich", "thong bao", "su kien", "calendar", "schedule")):
+        return "notifications"
+    if any(term in normalized for term in ("o tren", "vua noi", "vua hoi", "ai hoi", "nguoi nao hoi", "doan chat", "tin nhan nay", "dang hoi gi", "dang noi gi")):
+        return "context"
     if "đã hỏi" in text or "cau nay" in normalized or "truoc do" in normalized:
         return "history"
     return "answer"
@@ -119,5 +123,6 @@ def agent_respond(
         "matched_question": None,
         "answer": generated.get("answer", ""),
         "record": record,
+        "source": generated.get("source", "agent"),
     }
 

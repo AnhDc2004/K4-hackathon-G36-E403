@@ -16,15 +16,20 @@ def load_workspace() -> Dict[str, Any]:
     return data
 
 
-def search_workspace(query: str, limit: int = 5) -> List[Dict[str, Any]]:
-    tokens = {token for token in tokenize(query) if len(token) >= 2}
+def search_workspace(query: str, limit: int = 5, channel_ids: set[str] | None = None) -> List[Dict[str, Any]]:
+    clean_query = normalize_text(query).replace("tro ly ai", " ")
+    tokens = {token for token in tokenize(clean_query) if len(token) >= 2}
     ranked = []
     for item in load_workspace()["items"]:
+        if channel_ids and item.get("channel_id") not in channel_ids:
+            continue
+        title = normalize_text(item.get("title", ""))
         text = normalize_text(" ".join([item.get("title", ""), item.get("content", ""), *[r.get("content", "") for r in item.get("replies", [])]]))
         candidate_tokens = set(tokenize(text))
-        score = len(tokens & candidate_tokens)
-        if normalize_text(query) in text:
-            score += 2
+        title_tokens = set(tokenize(title))
+        score = len(tokens & candidate_tokens) + (2 * len(tokens & title_tokens))
+        if clean_query in text or title in clean_query:
+            score += 8
         # One common word such as "hôm nay" is not enough evidence.
         if score >= 2:
             ranked.append((score, item))
@@ -48,3 +53,18 @@ def append_post(channel_id: str, title: str, content: str, author: str) -> Dict[
     data["items"].insert(0, post)
     DATA_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return post
+
+
+def append_reply(post_id: str, content: str, author: str) -> Dict[str, Any]:
+    data = load_workspace()
+    target = next(
+        (item for item in data["items"]
+         if item.get("type") == "post" and (item.get("id") == post_id or item.get("id", "").endswith(f"-{post_id}"))),
+        None,
+    )
+    if target is None:
+        raise KeyError(post_id)
+    reply = {"author": author, "content": content, "created_at": __import__("datetime").datetime.now(__import__("datetime").timezone.utc).isoformat()}
+    target.setdefault("replies", []).append(reply)
+    DATA_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return {"post_id": target["id"], "reply": reply}

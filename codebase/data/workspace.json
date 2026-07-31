@@ -33,6 +33,168 @@
   ],
   "items": [
     {
+      "id": "post-hoi-dap-21",
+      "channel_id": "hoi-dap",
+      "type": "post",
+      "title": "Dữ liệu điểm danh",
+      "author": "hoàng",
+      "content": "Em muốn xem dữ liệu điểm danh của mình trên hệ thống của trường để đối chiếu với tình trạng tham gia học thực tế và kiểm tra xem có trường hợp điểm danh bị thiếu, sai hoặc chưa được cập nhật chính xác hay không. Mong BTC hướng dẫn giúp em. Em xin cảm ơn BTC!",
+      "created_at": "2026-07-31T08:18:11.834398+00:00",
+      "source_url": "/#channel/hoi-dap/post/post-hoi-dap-21",
+      "replies": [
+        {
+          "author": "kha",
+          "content": "phần điểm danh này tụi mình chưa công khai được á Phong ơi, và để kiểm tra thông tin điểm danh cá nhân thì bạn có thể mail về aithucchien@vinuni.edu.vn nhé",
+          "created_at": "2026-07-31T08:18:30.778346+00:00"
+        }
+      ]
+    },
+    {
+      "id": "post-hoi-dap-19",
+      "channel_id": "hoi-dap",
+      "type": "post",
+      "title": "Về vấn đề chuyển/rời đội",
+      "author": "hoàng",
+      "content": "Hiện tại mình thấy không thể rời đội khi đã tham gia. Vậy có cách nào để rời không ạ?",
+      "created_at": "2026-07-31T08:12:23.439226+00:00",
+      "source_url": "/#channel/hoi-dap/post/post-hoi-dap-19",
+      "replies": [
+        {
+          "author": "kha",
+          "content": "Hiện tại hệ thống ghép đội tự do đã đóng, các bạn đã được ghép vào team cố định",
+          "created_at": "2026-07-31T08:13:14.654303+00:00"
+        }
+      ]
+    },
+    {
+      "id": "post-hoi-dap-15",
+      "channel_id": "hoi-dap",
+      "type": "post",
+      "title": "Điểm danh & chuyên cần",
+      "author": "kha",
+      "content": "Em có thắc mắc ở 2 vấn đề mong BTC giải đáp\n1, Nếu em đến muộn bỏ lỡ mất điểm danh đầu giờ , cuối giờ điểm danh bình thường thì có bị tính vắng và trừ vào số buổi nghỉ cho phép hay không.\n2, Nếu đi muộn vì lý do bất ngờ hoặc bất khả kháng thì sao và được đi muộn tối đa trông khoảng thời gian cố định là bao nhiêu ạ.",
+      "created_at": "2026-07-31T08:05:55.569962+00:00",
+      "source_url": "/#channel/hoi-dap/post/post-hoi-dap-15",
+      "replies": [
+        {
+          "author": "hoàng",
+          "content": "Nếu chỉ điểm danh cuối giờ thì sẽ bị tick là không đi học buổi đó. Nhưng bọn mình sẽ duy trì mã điểm danh 1 tiếng sau khi giờ học bắt đầu. Nên bạn cố gắng đi nhé.\nNếu là lý do bất khả kháng thì bạn mail cho btc để phía btc xét duyệt nhá cái này ngoài phạm vi của bọn mình.",
+          "created_at": "2026-07-31T08:06:19.056015+00:00"
+        }
+      ]
+    },
+    {
+      "id": "post-hoi-dap-14",
+      "channel_id": "hoi-dap",
+      "type": "post",
+      "title": "Điểm danh qua Android",
+      "author": "hoàng",
+      "content": "Cho em hỏi là tuần tới bắt đầu điểm danh chính thức chưa ? Nếu đã bắt đầu thì BTC đã giải quyết được lỗi trên MyVinUni bản Android chưa ? Hay với những học viên dùng Android thì điểm danh bằng cách nào ?",
+      "created_at": "2026-07-31T08:05:07.170328+00:00",
+      "source_url": "/#channel/hoi-dap/post/post-hoi-dap-14",
+      "replies": []
+    },
+    {
+      "id": "post-hoi-dap-13",
+      "channel_id": "hoi-dap",
+      "type": "post",
+      "title": "Vấn đề làm project",
+      "author": "hoàng",
+      "content": "Nhóm em có thắc mắc mong BTC giải đáp. Hiện tại nhóm em đang chọn 1 đề tài về nhận dạng vật thể trong xe bao gồm trẻ em / thú cưng. Tuy nhiên do một số định hướng nhóm em muốn thu hẹp và chỉ làm nhận dạng trẻ em thôi, sau này sẽ mở rộng dần thì có được chấp nhận không ạ",
+      "created_at": "2026-07-31T08:03:31.474620+00:00",
+      "source_url": "/#channel/hoi-dap/post/post-hoi-dap-13",
+      "replies": [
+        {
+          "author": "kha",
+          "content": "mình nghĩ được bạn ạ, thời gian có hạn, thu hẹp scope rồi làm chỉn chu hơn sẽ ổn hơn. Bạn có thể pm mấy anh lab coach hỏi thử xem, hoặc raise ticket luôn",
+          "created_at": "2026-07-31T08:04:00.634865+00:00"
+        },
+        {
+          "author": "kha",
+          "content": "Sang tuần sẽ giải quyết cho các bn nhé",
+          "created_at": "2026-07-31T08:05:31.017735+00:00"
+        }
+      ]
+    },
+    {
+      "id": "post-hoi-dap-12",
+      "channel_id": "hoi-dap",
+      "type": "post",
+      "title": "Tải slide",
+      "author": "hoàng",
+      "content": "Chào mn, mình muốn tải slide bài giảng lý thuyết trên lớp thì làm thế nào ạ?",
+      "created_at": "2026-07-31T07:57:57.752095+00:00",
+      "source_url": "/#channel/hoi-dap/post/post-hoi-dap-12",
+      "replies": [
+        {
+          "author": "kha",
+          "content": "trên vlearn hỗ trợ tải 1 slide thôi nhé, tài liệu này là tài sản nhà trường nên k đc tải \n⁠[T-121]Mình share tóm tắt bài g…\nBạn tham khảo bài này xem",
+          "created_at": "2026-07-31T07:58:31.656453+00:00"
+        }
+      ]
+    },
+    {
+      "id": "post-hoi-dap-11",
+      "channel_id": "hoi-dap",
+      "type": "post",
+      "title": "Chưa có thẻ Học viên",
+      "author": "hoàng",
+      "content": "Em là Quang Minh Khóa 3 hiện đang chưa có thẻ học viên ạ, em học Lí thuyết thấy thầy ghi trên bảng là những trường hợp thiếu/lỗi thẻ thì tạo form ở trên hỏi đáp này để đỡ bị xót ạ.",
+      "created_at": "2026-07-31T07:27:24.760675+00:00",
+      "source_url": "/#channel/hoi-dap/post/post-hoi-dap-11",
+      "replies": [
+        {
+          "author": "hoàng",
+          "content": "hỏi mentor e ơi",
+          "created_at": "2026-07-31T07:42:38.602287+00:00"
+        }
+      ]
+    },
+    {
+      "id": "post-hoi-dap-10",
+      "channel_id": "hoi-dap",
+      "type": "post",
+      "title": "[Về AI log] So sánh khi dùng Claude Code và Antigravity",
+      "author": "hoàng",
+      "content": "Mình dùng Antigravity thì khi AIlog được up lên phoenix thì chỉ hiện prompt bản thân, nhưng claude lại ghi và up cả hành vi làm việc của nó. có cần fix k mn.",
+      "created_at": "2026-07-31T07:22:50.641925+00:00",
+      "source_url": "/#channel/hoi-dap/post/post-hoi-dap-10",
+      "replies": [
+        {
+          "author": "-_-",
+          "content": "Đây là khác biệt giữa 2 agent: Antigravity chỉ log prompt của user, còn Claude Code log cả quá trình làm việc của agent. Nếu AIlog hướng tới mục đích debug/observability thì nên cân nhắc fix để hai bên nhất quán; nếu là thiết kế chủ đích thì không cần fix nhưng nên ghi rõ trong tài liệu.",
+          "created_at": "2026-07-31T07:43:41.672082+00:00"
+        },
+        {
+          "author": "hoàng",
+          "content": "BTC yêu cầu tối thiểu user prompt nhé, còn những field khác các bạn có thể sửa script nếu cần nhé",
+          "created_at": "2026-07-31T07:54:32.746133+00:00"
+        }
+      ]
+    },
+    {
+      "id": "post-hoi-dap-9",
+      "channel_id": "hoi-dap",
+      "type": "post",
+      "title": "Điểm cộng",
+      "author": "hoàng",
+      "content": "Mọi người cho em hỏi là phần điểm cộng trên lớp Lab/ Lý thuyết có quy đổi sang XP trong server discord không ạ, hay chỉ được ghi nhận là điểm tích cực hoạt động trong giờ thôi ạ",
+      "created_at": "2026-07-31T07:17:40.149533+00:00",
+      "source_url": "/#channel/hoi-dap/post/post-hoi-dap-9",
+      "replies": [
+        {
+          "author": "-_-",
+          "content": "Điểm cộng giơ tay là 1, lab là 2",
+          "created_at": "2026-07-31T07:42:56.214557+00:00"
+        },
+        {
+          "author": "kha",
+          "content": "Không nha Khánh, XP là dùng cho hoạt động build để đánh giá tính active của mỗi bạn khi tham gia dự án build đó, còn điểm cộng buổi sáng sẽ được tính cho mỗi ngày học nhé. Nhưng điểm nào ghi nhận lại thì đều ảnh hưởng đến kq đầu ra hết á nghenn",
+          "created_at": "2026-07-31T07:55:23.637738+00:00"
+        }
+      ]
+    },
+    {
       "id": "post-bai-hoc-8",
       "channel_id": "bai-hoc",
       "type": "post",
@@ -85,7 +247,13 @@
       "content": "Sau khi chốt đề thì data mình tự kiếm hả ae?",
       "created_at": "2026-07-31T05:28:11.376301+00:00",
       "source_url": "/#channel/hoi-dap/post/post-hoi-dap-4",
-      "replies": []
+      "replies": [
+        {
+          "author": "hoàng",
+          "content": "Đúng rồi nhé, nhưng câu phát biểu phải nên là : Khi quá trình chọn đề tài cần cân nhắc xem đã có data/ dễ kiếm không theo khả năng của team thì mới chọn. Chứ không nên là chọn rồi mới đi tìm xem đề tài có data hay không",
+          "created_at": "2026-07-31T07:53:57.138780+00:00"
+        }
+      ]
     },
     {
       "id": "msg-thongbao-001",

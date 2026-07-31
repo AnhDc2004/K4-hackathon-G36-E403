@@ -637,6 +637,15 @@
     return null;
   }
 
+  function findPostByWorkspaceId(workspaceId){
+    var shortId = String(workspaceId || "").split("-").pop();
+    for(var id in CHANNELS){
+      var found = getPost(id, shortId);
+      if(found) return found;
+    }
+    return null;
+  }
+
   /* ---------------- sidebar ---------------- */
   function renderSidebar(){
     var html = "";
@@ -909,15 +918,20 @@
     var mode = getMode();
     if(CHANNELS[activeChan].group === "thongbao") return;
     var targetList;
+    var postReplyMode = false;
     if(mode==="post-detail"){
       targetList = getPost(activeChan, activePost).replies;
+      var post = getPost(activeChan, activePost);
+      targetList.push({a:currentUser || "Hoàng", self:true, t:nowShort(), m:val});
+      savePostReply(post.id, val);
+      postReplyMode = true;
     } else if(mode==="chat"){
       targetList = CHANNELS[activeChan].messages;
     } else {
       return;
     }
     targetList.push({a:currentUser || "Hoàng", self:true, t:nowShort(), m:val});
-    saveChatMessage("user", val);
+    if(!postReplyMode) saveChatMessage("user", val);
     composerInput.value = "";
     resizeComposer();
     updateSendState();
@@ -963,19 +977,49 @@
     composerInput.setSelectionRange(composerInput.value.length, composerInput.value.length);
   });
 
+  async function savePostReply(postId, content){
+    try{
+      var response = await fetch(API_BASE + "/api/post-replies", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({post_id:postId, content:content, author:currentUser || "Hoàng"})
+      });
+      if(!response.ok) throw new Error("HTTP " + response.status);
+    }catch(error){ console.warn("Không lưu được phản hồi bài đăng:", error); }
+  }
+
   function respondAsBot(targetList, question, intent){
     var placeholder = {a:"Trợ lý AI", role:"BOT", t:nowShort(), typing:true};
     targetList.push(placeholder);
+    broadcastAiTyping(activeChan, true);
     render();
-    if(/^(?:@?\s*trợ lý ai\s*)?(hi|hello|hey|xin chào|chào|alo)\s*[!.?]*$/i.test(question.trim())){
+    if(/^(?:@?\s*trợ lý ai\s*)?(hi|hello|helo|hey|xin chào|chào|alo)\s*[!.?]*$/i.test(question.trim())){
       var greeting = "Chào "+(currentUser || "bạn")+"! Mình là Trợ lý AI. Bạn muốn mình trả lời câu hỏi, tìm thông tin trong các kênh, hay tóm tắt cuộc hội thoại?";
       var greetingIndex = targetList.indexOf(placeholder);
       targetList[greetingIndex] = {a:"Trợ lý AI", role:"BOT", t:nowShort(), m:greeting};
-      saveChatMessage("assistant", greeting);
+      if(getMode()==="post-detail") savePostReply(activePost, greeting);
+      else saveChatMessage("assistant", greeting);
       render();
       return;
     }
-    callAssistantBackend(question, getWorkspaceContextText(), intent).then(function(payload){
+    if(/^@?\s*trợ lý ai\s*$/i.test(question.trim())){
+      var mentionIndex = targetList.indexOf(placeholder);
+      var mentionReply = "Mình đây. Bạn muốn hỏi điều gì hoặc cần mình tóm tắt đoạn chat nào?";
+      targetList[mentionIndex] = {a:"Trợ lý AI", role:"BOT", t:nowShort(), m:mentionReply};
+      if(getMode()==="post-detail") savePostReply(activePost, mentionReply);
+      else saveChatMessage("assistant", mentionReply);
+      render();
+      return;
+    }
+    var summaryQuestion = /(?:tóm tắt|tom tat|summarize|summary)/i.test(question);
+    var contextQuestion = /(?:ở trên|vừa nói|vừa hỏi|ai hỏi|người nào hỏi|đoạn chat|tin nhắn này|đang hỏi gì|đang nói gì)/i.test(question);
+    var requestIntent = intent || (summaryQuestion ? "summarize" : (contextQuestion ? "context" : undefined));
+    var contextPromise = requestIntent === "summarize"
+      ? hydrateChatHistory().then(getSummaryContextText)
+      : Promise.resolve(requestIntent === "context" ? getVisibleContextText() : getWorkspaceContextText());
+    contextPromise.then(function(contextText){
+      return callAssistantBackend(question, contextText, requestIntent);
+    }).then(function(payload){
       var idx = targetList.indexOf(placeholder);
       if(idx===-1) return;
       var text = payload.answer || "Chưa có câu trả lời.";
@@ -986,14 +1030,18 @@
         ? sourceFromPayload(payload)
         : findSource(question);
       targetList[idx] = {a:"Trợ lý AI", role:"BOT", t:nowShort(), m:text, source: groundedSource};
-      saveChatMessage("assistant", text);
+      broadcastAiTyping(activeChan, false);
+      if(getMode()==="post-detail") savePostReply(activePost, text);
+      else saveChatMessage("assistant", text);
       render();
     }).catch(function(){
       var idx = targetList.indexOf(placeholder);
       if(idx===-1) return;
       var text = "Mình đang tạm không kết nối được với AI. Bạn có thể thử lại sau ít phút hoặc gửi lại câu hỏi; lịch sử chat của bạn vẫn được lưu.";
       targetList[idx] = {a:"Trợ lý AI", role:"BOT", t:nowShort(), m:text, source: null};
-      saveChatMessage("assistant", text);
+      broadcastAiTyping(activeChan, false);
+      if(getMode()==="post-detail") savePostReply(activePost, text);
+      else saveChatMessage("assistant", text);
       render();
     });
   }
@@ -1074,14 +1122,42 @@
     }catch(error){ console.warn("Không tải được lịch sử chat:", error); }
   }
 
+  var realtimeSocket = null;
+  var realtimeClientId = Math.random().toString(36).slice(2);
+  function broadcastAiTyping(channel, active){
+    if(realtimeSocket && realtimeSocket.readyState === WebSocket.OPEN){
+      realtimeSocket.send(JSON.stringify({event:"ai_typing", channel:channel, active:active, client_id:realtimeClientId}));
+    }
+  }
   function connectRealtimeChat(){
     var protocol = location.protocol === "https:" ? "wss:" : "ws:";
     var socket = new WebSocket(protocol + "//" + location.host + "/ws/chat");
+    realtimeSocket = socket;
     socket.onmessage = function(event){
       var item = JSON.parse(event.data || "{}");
+      if(item.event === "ai_typing"){
+        if(item.client_id === realtimeClientId) return;
+        var typingChannel = CHANNELS[item.channel];
+        if(typingChannel){
+          typingChannel.messages = typingChannel.messages || [];
+          var typingIndex = typingChannel.messages.findIndex(function(message){ return message.aiTyping; });
+          if(item.active && typingIndex === -1) typingChannel.messages.push({a:"Trợ lý AI", role:"BOT", aiTyping:true, typing:true, t:nowShort()});
+          if(!item.active && typingIndex >= 0) typingChannel.messages.splice(typingIndex, 1);
+          render();
+        }
+        return;
+      }
       if(item.event === "post_created"){
         addWorkspacePost(item.post);
         render();
+        return;
+      }
+      if(item.event === "post_reply_created"){
+        var replyPost = findPostByWorkspaceId(item.post_id);
+        if(replyPost && !replyPost.replies.some(function(reply){ return reply.a === item.reply.author && reply.m === item.reply.content; })){
+          replyPost.replies.push({a:item.reply.author, t:formatMessageTime(item.reply.created_at), m:item.reply.content});
+          render();
+        }
         return;
       }
       var channel = CHANNELS[item.channel];
@@ -1173,6 +1249,18 @@
       }
     });
     return sections.join("\n\n");
+  }
+
+  function getSummaryContextText(){
+    var messages = (CHANNELS[activeChan].messages || []).filter(function(message){
+      var text = String(message.m || "").toLowerCase();
+      var commandText = text.replace(/^@\s*trợ lý ai\s*/, "").trim();
+      return message.role !== "BOT"
+        && commandText.indexOf("/summarize") !== 0
+        && commandText.indexOf("tóm tắt") !== 0
+        && commandText.indexOf("tom tat") !== 0;
+    });
+    return messages.slice(-4).map(function(message){ return message.a + ": " + message.m; }).join("\n");
   }
 
   function renderAssistantResult(payload){
@@ -1289,9 +1377,11 @@
 
   render();
   openHashLocation();
-  hydrateWorkspace();
-  hydrateChatHistory();
-  connectRealtimeChat();
-  resizeComposer();
+  (async function initializeWorkspace(){
+    await hydrateWorkspace();
+    await hydrateChatHistory();
+    connectRealtimeChat();
+    resizeComposer();
+  })();
 })();
 </script>
